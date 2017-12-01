@@ -1,0 +1,29 @@
+.kwm-call-notification {
+    position: fixed;
+    width: 50%;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 18px;
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -100px;
+    z-index: 1000;
+}
+
+.kwm-call-notification .kwm-profile-image-container {
+    float: left;
+    margin: 0 18px 18px 0;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.kwm-call-notification .kwm-call-notification-msg {
+    margin-bottom: 18px;
+}
+.kwm-call-notification .kwm-call-buttons {
+    clear: both;
+    text-align: center;
+}

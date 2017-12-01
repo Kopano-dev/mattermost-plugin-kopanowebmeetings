@@ -1,0 +1,59 @@
+button.kwm-btn {
+    background: grey;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    font-size: 30px;
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    color: white;
+}
+button.kwm-btn:hover {
+    border-color: white;
+}
+button.kwm-btn.kwm-accept {
+    background: green;
+}
+button.kwm-btn.kwm-reject {
+    background: red;
+}
+button.kwm-btn.kwm-reject i {
+    transform: rotate(135deg);
+}
+
+button.kwm-btn.kwm-start-call {
+    font-size: inherit;
+    background: white;
+    border-color: grey;
+    color: rgba(61, 60, 64, 0.12);
+    padding-top: 2px;
+
+    /* ugly, but for some reason the 'channelHeaderDropdownButton' is otherwise covering our button */
+    position: relative;
+    z-index: 1000;
+}
+button.kwm-btn.kwm-start-call:hover {
+    color: rgb(35, 137, 215);
+}
+button.kwm-btn.kwm-start-call svg {
+    height: 14px;
+}
+button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall),
+button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall):hover {
+    opacity: 0.5;
+    cursor: default;
+    border-color: rgba(61, 60, 64, 0.12);
+}
+button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall) svg,
+button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall):hover svg {
+    fill: rgba(61, 60, 64, 0.12);
+}
+button.kwm-btn.kwm-start-call.kwm-incall,
+button.kwm-btn.kwm-start-call.kwm-incall:hover {
+    border-color: rgb(35, 137, 215);
+    cursor: default;
+}
+button.kwm-btn.kwm-start-call.kwm-incall svg,
+button.kwm-btn.kwm-start-call.kwm-incall:hover svg {
+    fill: rgb(35, 137, 215);
+}
