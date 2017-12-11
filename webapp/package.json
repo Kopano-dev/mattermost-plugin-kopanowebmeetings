@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "babel-core": "6.25.0",
+    "babel-eslint": "^8.0.3",
     "babel-loader": "7.1.1",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-polyfill": "6.23.0",
@@ -28,7 +29,6 @@
     "webpack": "2.2.1"
   },
   "scripts": {
-    "build": "webpack --display-error-details --verbose --progress",
-    "check": "eslint --ext \".jsx\" --ext \".js\" --ignore-pattern node_modules --quiet ."
+    "build": "webpack --display-error-details --verbose --progress"
   }
 }

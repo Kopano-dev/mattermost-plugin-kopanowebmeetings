@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     entry: './index.js',
     output: {
-        filename: 'dist/kopanowebmeetings_bundle.js'
+        filename: 'build/kopanowebmeetings_bundle.js'
     },
     module: {
         rules: [
