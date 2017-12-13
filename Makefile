@@ -1,55 +1,44 @@
-.PHONY: build test run clean stop check-style
+PACKAGE  = stash.kopano.io/km/mattermost-plugin-kopanowebmeetings
+PACKAGE_NAME = kopano-$(shell basename $(PACKAGE))
 
-check-style: .npminstall
-	@echo Checking for style guide compliance
+# Variables
+PWD     := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+DATE    ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null | sed 's/^v//' || \
+			cat $(CURDIR)/.version 2> /dev/null || echo 0.0.0-unreleased)
 
-	cd webapp && npm run check
+# Build
 
-test: .npminstall
-	@echo Not yet implemented
+.PHONY: all
+all: webapp
 
-.npminstall:
-	@echo Getting dependencies using npm
+.PHONY: webapp
+webapp:
+	$(MAKE) -C webapp build
 
-	cd webapp && npm install
-	touch $@
+# Dist
 
-build: .npminstall
-	@echo Building plugin
+.PHONY: dist
+dist: webapp/build/kopanowebmeetings_bundle.js plugin.json ; $(info building dist tarball ...)
+	@mkdir -p "dist/${PACKAGE_NAME}-${VERSION}"
+	@cd dist && \
+	cp -avf ../LICENSE.txt "${PACKAGE_NAME}-${VERSION}" && \
+	cp -avf ../AGPL-3 "${PACKAGE_NAME}-${VERSION}" && \
+	cp -avf ../README.md "${PACKAGE_NAME}-${VERSION}" && \
+	cp -avr ../webapp/build "${PACKAGE_NAME}-${VERSION}/webapp" && \
+	cp -avr ../plugin.json "${PACKAGE_NAME}-${VERSION}" && \
+	tar --owner=0 --group=0 -czvf ${PACKAGE_NAME}-${VERSION}.tar.gz "${PACKAGE_NAME}-${VERSION}" && \
+	cd ..
 
-	# Clean old dist
-	rm -rf dist
-	rm -rf webapp/dist
-	cd webapp && npm run build
+# Rest
 
-	# Copy files from webapp
-	mkdir -p dist/kopanowebmeetings/webapp
-	cp webapp/dist/* dist/kopanowebmeetings/webapp/
+.PHONY: clean
+clean: ; $(info cleaning ...)	@
+	@rm -rf $(GOPATH)
+	@rm -rf bin
+	@rm -rf test/test.*
+	@$(MAKE) -C webapp clean
 
-	# Copy license
-	cp AGPL-3 dist/kopanowebmeetings/
-	cp LICENSE.txt dist/kopanowebmeetings/
-
-	# Copy plugin files
-	cp plugin.json dist/kopanowebmeetings/
-
-	# Compress
-	cd dist && tar -zcvf kopanowebmeetings.tar.gz kopanowebmeetings/*
-
-	# Clean up temp files
-	rm -rf dist/kopanowebmeetings
-
-	@echo Plugin built at: dist/kopanowebmeetings.tar.gz
-
-run: .npminstall
-	@echo Not yet implemented
-
-stop:
-	@echo Not yet implemented
-
-clean:
-	@echo Cleaning plugin
-
-	rm -rf dist
-	cd webapp && rm -rf node_modules
-	cd webapp && rm -f .npminstall
+.PHONY: version
+version:
+	@echo $(VERSION)
