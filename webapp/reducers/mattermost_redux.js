@@ -8,20 +8,20 @@ import kwmStore from 'store/kwm_store.js';
  * reducers to their redux store we can remove our own redux store.
  *
  * @param  {Object} [state={}] The state of our redux store.
- * @param  {Object} action     The action that was dispatched
- * @return {Object}            The updated state
+ * @param  {Object} action	 The action that was dispatched
+ * @return {Object}			The updated state
  */
 export const mattermostReduxState = (state = {}, action) => {
-    switch (action.type) {
-        case Constants.Actions.KWM_MMREDUX_STATE_CHANGE:
-            return {
-                ...state,
-                ...action.state
-            };
-        case Constants.Actions.KWM_RELAY_ACTION:
-            kwmStore.mmDispatch(action.action);
-            return state;
-        default:
-            return state;
-    }
+	switch (action.type) {
+		case Constants.Actions.KWM_MMREDUX_STATE_CHANGE:
+			return {
+				...state,
+				...action.state,
+			};
+		case Constants.Actions.KWM_RELAY_ACTION:
+			kwmStore.mmDispatch(action.action);
+			return state;
+		default:
+			return state;
+	}
 };

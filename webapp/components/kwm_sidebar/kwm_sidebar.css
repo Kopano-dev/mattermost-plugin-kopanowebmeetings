@@ -1,9 +1,9 @@
 #sidebar-webrtc {
-    background: white;
-    position: fixed;
-    height: 100%;
-    width: 400px;
-    top: 0;
-    right: 0;
-    display: block;
+	background: white;
+	position: fixed;
+	height: 100%;
+	width: 400px;
+	top: 0;
+	right: 0;
+	display: block;
 }

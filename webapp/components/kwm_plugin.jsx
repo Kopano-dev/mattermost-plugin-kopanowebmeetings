@@ -1,5 +1,5 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
+import PropTypes from 'prop-types';
 import {connect, Provider} from 'react-redux';
 
 import Constants from 'utils/constants.js';
@@ -13,32 +13,35 @@ import KwmController from 'components/kwm_controller.jsx';
  * in the property 'mattermostReduxState'.
  */
 class KwmPlugin extends React.Component {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        // HACK: We add the dispatch method of the Mattermost redux store
-        // to our own store, so we can call it from our reducer to relay
-        // actions.
-        kwmStore.mmDispatch = this.props.dispatch;
-    }
+		// HACK: We add the dispatch method of the Mattermost redux store
+		// to our own store, so we can call it from our reducer to relay
+		// actions.
+		kwmStore.mmDispatch = this.props.dispatch;
+	}
 
-    render(props) {
-        return (
-            <Provider store={kwmStore}>
-                <KwmController />
-            </Provider>
-        );
-    }
+	render(props) {
+		return (
+			<Provider store={kwmStore}>
+				<KwmController />
+			</Provider>
+		);
+	}
 }
+KwmPlugin.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => {
-    // Propagate the changes in the Mattermost redux store to our own redux store
-    kwmStore.dispatch({
-        type: Constants.Actions.KWM_MMREDUX_STATE_CHANGE,
-        state
-    });
+	// Propagate the changes in the Mattermost redux store to our own redux store
+	kwmStore.dispatch({
+		type: Constants.Actions.KWM_MMREDUX_STATE_CHANGE,
+		state,
+	});
 
-    return {};
+	return {};
 };
 
 // Use the state of the redux store by connecting

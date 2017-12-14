@@ -1,29 +1,54 @@
 .kwm-call-notification {
-    position: fixed;
-    width: 50%;
-    min-width: 300px;
-    max-width: 400px;
-    padding: 18px;
-    color: white;
-    background: rgba(0, 0, 0, 0.8);
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 50%;
-    margin-top: -100px;
-    z-index: 1000;
+	position: fixed;
+	width: 250px;
+	padding: 0;
+	color: white;
+	background: rgba(56, 75, 96, 0.8);
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 50%;
+	margin-top: -175px;
+	z-index: 1000;
 }
-
+.kwm-call-notification .kwm-call-notification-header {
+	text-transform: uppercase;
+	padding: 18px;
+	border-bottom: 1px solid white;
+}
+.kwm-call-notification .kwm-call-notification-header svg {
+	fill: white;
+	height: 12px;
+	padding-right: 6px;
+	position: relative;
+	top: 1px
+}
 .kwm-call-notification .kwm-profile-image-container {
-    float: left;
-    margin: 0 18px 18px 0;
-    border-radius: 50%;
-    overflow: hidden;
+	margin: 18px auto;
+	position: relative;
+	border-radius: 50%;
+	overflow: hidden;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+}
+.kwm-call-notification .kwm-profile-image-container img {
+	height: 50px;
 }
 .kwm-call-notification .kwm-call-notification-msg {
-    margin-bottom: 18px;
+	text-transform: uppercase;
+	margin-bottom: 18px;
+	font-size: 1.3em;
+	text-align: center;
 }
 .kwm-call-notification .kwm-call-buttons {
-    clear: both;
-    text-align: center;
+	clear: both;
+	text-align: center;
+	padding: 18px;
+}
+.kwm-call-notification .kwm-call-buttons button {
+	margin-right: 18px;
+}
+.kwm-call-notification .kwm-call-buttons button:last-child {
+	margin-right: 0;
 }

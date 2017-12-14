@@ -1,38 +1,43 @@
 .kwm-videolist {
-    position: relative;
-    padding: 12px;
+	position: relative;
+	padding: 12px;
 }
 .kwm-videolist video {
-    width: 100%;
-    background: grey url(white_noise.gif);
-    background-size: contain;
-    position: relative;
+	width: 100%;
+	background: grey url(white_noise.gif);
+	background-size: cover;
+	position: relative;
 }
 .kwm-videolist .kwm-video-title {
-    position: absolute;
-    bottom: 3px;
-    left: 3px;
-    color: white;
-    background: rgba(0,0,0,0.5);
-    padding: 3px;
-    line-height: 1em;
-    max-width: 70%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+	position: absolute;
+	bottom: 3px;
+	left: 3px;
+	color: white;
+	background: rgba(0,0,0,0.5);
+	padding: 3px;
+	line-height: 1em;
+	max-width: 70%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .kwm-videolist .kwm-video-container {
-    line-height: 0;
+	line-height: 0;
 }
 .kwm-videolist .kwm-video-container:first-child {
-    position: relative;
+	position: relative;
 }
 .kwm-videolist .kwm-video-container:nth-child(1n+2) {
-    position: absolute;
-    width: 30%;
-    border: 1px solid white;
-    top: 15px;
-    right: 15px;
-    font-size: 0.8em;
+	position: absolute;
+	width: 30%;
+	border: 1px solid white;
+	top: 15px;
+	right: 15px;
+	font-size: 0.8em;
+}
+
+.kwm-videolist .kwm-call-buttons {
+	text-align: center;
+	padding-top: 18px;
 }

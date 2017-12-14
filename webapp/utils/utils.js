@@ -7,15 +7,15 @@ import {Client4} from 'mattermost-redux/client';
  * @return {String} The users full name
  */
 export function getFullName(user) {
-    if (user.first_name && user.last_name) {
-        return user.first_name + ' ' + user.last_name;
-    } else if (user.first_name) {
-        return user.first_name;
-    } else if (user.last_name) {
-        return user.last_name;
-    }
+	if (user.first_name && user.last_name) {
+		return user.first_name + ' ' + user.last_name;
+	} else if (user.first_name) {
+		return user.first_name;
+	} else if (user.last_name) {
+		return user.last_name;
+	}
 
-    return '';
+	return '';
 }
 
 /**
@@ -25,16 +25,16 @@ export function getFullName(user) {
  * @return {String} The users display name
  */
 export function getDisplayName(user) {
-    if (user.nickname && user.nickname.trim().length > 0) {
-        return user.nickname;
-    }
-    var fullName = getFullName(user);
+	if (user.nickname && user.nickname.trim().length > 0) {
+		return user.nickname;
+	}
+	var fullName = getFullName(user);
 
-    if (fullName) {
-        return fullName;
-    }
+	if (fullName) {
+		return fullName;
+	}
 
-    return user.username;
+	return user.username;
 }
 
 /**
@@ -44,10 +44,10 @@ export function getDisplayName(user) {
  * @return {String} The url of the profile image of the given user.
  */
 export function imageURLForUser(userIdOrObject) {
-    if (typeof userIdOrObject == 'string') {
-        return Client4.getUsersRoute() + '/' + userIdOrObject + '/image?_=0';
-    }
-    return Client4.getUsersRoute() + '/' + userIdOrObject.id + '/image?_=' + (userIdOrObject.last_picture_update || 0);
+	if (typeof userIdOrObject == 'string') {
+		return Client4.getUsersRoute() + '/' + userIdOrObject + '/image?_=0';
+	}
+	return Client4.getUsersRoute() + '/' + userIdOrObject.id + '/image?_=' + (userIdOrObject.last_picture_update || 0);
 }
 
 /**
@@ -56,12 +56,24 @@ export function imageURLForUser(userIdOrObject) {
  * @param  {String[]|String} classNames The class(es) that should be removed from the element(s)
  */
 export const removeClassFromElement = (elementSelector, classNames) => {
-    const els = document.querySelectorAll(elementSelector);
-    if ( els.length === 0 ) return;
+	const els = document.querySelectorAll(elementSelector);
+	if ( els.length === 0 ) {
+		return;
+	}
 
-    if ( !Array.isArray(classNames) ) classNames = [classNames];
+	if ( !Array.isArray(classNames) ) {
+		/* eslint-disable no-param-reassign */
+		classNames = [classNames];
+		/* eslint-enable no-param-reassign */
+	}
 
-    classNames.forEach(className => els.forEach(el => el.classList.remove(className)));
+	classNames.forEach(className => {
+		// IE, Edge do not support forEach on a nodeList, so we must use this
+		// old fashioned for loop.
+		for (let i = 0; i < els.length; i++) {
+			els[i].classList.remove(className);
+		}
+	});
 };
 
 /**
@@ -70,13 +82,25 @@ export const removeClassFromElement = (elementSelector, classNames) => {
  * @param  {String[]|String} classNames The class(es) that should be added to the element(s)
  */
 export const addClassToElement = (elementSelector, classNames) => {
-    const els = document.querySelectorAll(elementSelector);
-    if ( els.length === 0 ) return;
+	const els = document.querySelectorAll(elementSelector);
+	if ( els.length === 0 ) {
+		return;
+	}
 
-    if ( !Array.isArray(classNames) ) classNames = [classNames];
+	if ( !Array.isArray(classNames) ) {
+		/* eslint-disable no-param-reassign */
+		classNames = [classNames];
+		/* eslint-enable no-param-reassign */
+	}
 
-    classNames.forEach(className => els.forEach(el => el.classList.add(className)));
-}
+	classNames.forEach(className => {
+		// IE, Edge do not support forEach on a nodeList, so we must use this
+		// old fashioned for loop.
+		for (let i = 0; i < els.length; i++) {
+			els[i].classList.add(className);
+		}
+	});
+};
 
 /**
  * Fetches the admin token from the KWM server.
@@ -85,9 +109,9 @@ export const addClassToElement = (elementSelector, classNames) => {
  * @return {Object} The token
  */
 export async function fetchKwmAdminToken(baseURI, sessionID) {
-	const url = (baseURI ? baseURI : '') + '/api/v1/admin/auth/tokens';
+	const url = (baseURI || '') + '/api/v1/admin/auth/tokens';
 	const payload = {
-		'type': 'Token'
+		type: 'Token',
 	};
 	if (sessionID) {
 		payload.id = sessionID;
@@ -95,7 +119,7 @@ export async function fetchKwmAdminToken(baseURI, sessionID) {
 
 	return fetch(url, {
 		body: JSON.stringify(payload),
-		method: 'POST'
+		method: 'POST',
 	}).then(response => {
 		return response.json();
 	});

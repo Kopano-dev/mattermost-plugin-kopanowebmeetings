@@ -1,36 +1,39 @@
 {
-  "name": "kopanowebmeetings",
-  "version": "1.0.0",
-  "description": "Kopano WebMeetings for Mattermost",
-  "dependencies": {
-    "key-mirror": "^1.0.1",
-    "mattermost-redux": "github:mattermost/mattermost-redux#npmtest",
-    "prop-types": "^15.5.10",
-    "react": "15.6.1",
-    "react-bootstrap": "^0.31.5",
-    "react-dom": "15.6.1",
-    "react-intl": "^2.3.0",
-    "react-redux": "5.0.6",
-    "superagent": "3.5.2"
-  },
-  "devDependencies": {
-    "babel-core": "6.25.0",
-    "babel-eslint": "^8.0.3",
-    "babel-loader": "7.1.1",
-    "babel-plugin-transform-runtime": "6.23.0",
-    "babel-polyfill": "6.23.0",
-    "babel-preset-es2015": "6.24.1",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-0": "6.24.1",
-    "css-loader": "^0.28.7",
-    "eslint": "3.17.1",
-    "eslint-plugin-react": "6.10.0",
-    "file-loader": "^1.1.5",
-    "image-webpack-loader": "^3.4.2",
-    "style-loader": "^0.19.0",
-    "webpack": "2.2.1"
-  },
-  "scripts": {
-    "build": "webpack --display-error-details --verbose --progress"
-  }
+	"name": "kopanowebmeetings",
+	"version": "1.0.0",
+	"description": "Kopano WebMeetings for Mattermost",
+	"dependencies": {
+		"axios": "^0.17.1",
+		"key-mirror": "^1.0.1",
+		"mattermost-redux": "^1.1.0",
+		"prop-types": "^15.5.10",
+		"react": "15.6.1",
+		"react-bootstrap": "^0.31.5",
+		"react-dom": "15.6.1",
+		"react-intl": "^2.3.0",
+		"react-redux": "5.0.6",
+		"superagent": "3.5.2"
+	},
+	"devDependencies": {
+		"babel-core": "6.25.0",
+		"babel-eslint": "^8.0.3",
+		"babel-loader": "7.1.1",
+		"babel-plugin-transform-runtime": "6.23.0",
+		"babel-polyfill": "6.23.0",
+		"babel-preset-es2015": "6.24.1",
+		"babel-preset-react": "6.24.1",
+		"babel-preset-stage-0": "6.24.1",
+		"css-loader": "^0.28.7",
+		"eslint": "3.17.1",
+		"eslint-loader": "^1.9.0",
+		"eslint-plugin-react": "6.10.0",
+		"file-loader": "^1.1.5",
+		"image-webpack-loader": "^3.4.2",
+		"style-loader": "^0.19.0",
+		"webpack": "2.2.1"
+	},
+	"scripts": {
+		"build:dev": "webpack --display-error-details --verbose --progress",
+		"build": "webpack --env.prod --display-error-details --verbose --progress"
+	}
 }
