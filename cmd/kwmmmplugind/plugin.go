@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 	"sync/atomic"
 
 	"github.com/mattermost/mattermost-server/plugin"
@@ -67,9 +68,12 @@ func (p *Plugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	switch path := req.URL.Path; path {
-	case "/api/v1/config":
+	switch {
+	case req.URL.Path == "/api/v1/config":
 		p.handleConfig(rw, req)
+
+	case strings.HasPrefix(req.URL.Path, "/static"):
+		p.handleStatic(rw, req)
 
 	default:
 		http.NotFound(rw, req)
@@ -119,4 +123,9 @@ func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error)
 	}
 
 	return result, nil
+}
+
+func (p *Plugin) handleStatic(rw http.ResponseWriter, req *http.Request) {
+	// TODO(longsleep): Add caching headers.
+	http.StripPrefix("/static/", http.FileServer(http.Dir("./plugins/kopanowebmeetings/webapp/static"))).ServeHTTP(rw, req)
 }
