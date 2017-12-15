@@ -16,6 +16,12 @@
 				"type": "text",
 				"help_text": "The URL of Kopano Web Meetings Server."
 			},
+      {
+        "key": "KWMServerInternalURL",
+        "display_name": "Kopano Web Meetings Server secure interal URL",
+        "type": "text",
+        "help_text": "The URL of Kopano Web Meetings Server used for internal connections. This URL should be private and/or firewalled so it can only be accessed from Mattermost."
+      },
 			{
 				"key": "StunURI",
 				"display_name": "STUN server URI",

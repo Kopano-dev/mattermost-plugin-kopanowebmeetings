@@ -19,6 +19,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"sync/atomic"
 
@@ -83,7 +84,12 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	config := p.config()
+	result, err := p.getClientConfiguration(userID)
+	if err != nil {
+		log.Println("kwm plugin error while getting client configration", err)
+		http.Error(rw, "", http.StatusInternalServerError)
+		return
+	}
 
 	rw.Header().Set("Content-Type", "application/json")
 	rw.WriteHeader(http.StatusOK)
@@ -91,5 +97,26 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 	enc := json.NewEncoder(rw)
 	enc.SetIndent("", "  ")
 
-	enc.Encode(config)
+	enc.Encode(result)
+}
+
+func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error) {
+	config := p.config()
+	result := &ClientConfiguration{
+		KWMServerURL: config.KWMServerURL,
+		Token:        "not-implemented",
+		StunURI:      config.StunURI,
+
+		ExpiresIn: 3600, // NOTE(longsleep): Add to configuration.
+	}
+
+	if config.TurnURI != "" {
+		result.TurnURI = config.TurnURI
+		if config.TurnSharedKey != "" {
+			result.TurnUsername = generateTurnUsername(config.TurnUsername)
+			result.TurnPassword = generateTurnPassword(result.TurnUsername, config.TurnSharedKey)
+		}
+	}
+
+	return result, nil
 }

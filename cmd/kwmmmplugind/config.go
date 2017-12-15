@@ -17,16 +17,47 @@
 
 package main
 
+import (
+	"fmt"
+)
+
 // A Configuration holds the configuration data.
 type Configuration struct {
-	KWMServerURL  string
-	StunURI       string
-	TurnURI       string
-	TurnUsername  string
-	TurnSharedKey string
+	KWMServerURL         string
+	KWMServerInternalURL string
+	StunURI              string
+	TurnURI              string
+	TurnUsername         string
+	TurnSharedKey        string
 }
 
 // IsValid returns an error when the accociated configuration is not valid.
 func (c *Configuration) IsValid() error {
-	return nil
+	var err error
+
+	for {
+		if c.KWMServerURL == "" {
+			err = fmt.Errorf("KWMServerURL is empty")
+			break
+		}
+		if c.KWMServerInternalURL == "" {
+			err = fmt.Errorf("KWMServerInternalURL is empty")
+			break
+		}
+
+		break
+	}
+
+	return err
+}
+
+// ClientConfiguration is the struct to hold client configuration data.
+type ClientConfiguration struct {
+	KWMServerURL string `json:"kwmserver_url"`
+	Token        string `json:"token,omitempty"`
+	StunURI      string `json:"stun_uri,omitempty"`
+	TurnURI      string `json:"turn_uri,omitempty"`
+	TurnUsername string `json:"turn_username,omitempty"`
+	TurnPassword string `json:"turn_password,omitempty"`
+	ExpiresIn    uint64 `json:"expires_in"`
 }
