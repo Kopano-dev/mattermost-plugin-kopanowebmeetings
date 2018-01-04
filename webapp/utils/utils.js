@@ -101,26 +101,3 @@ export const addClassToElement = (elementSelector, classNames) => {
 		}
 	});
 };
-
-/**
- * Fetches the admin token from the KWM server.
- * @param  {String} baseURI The base URI of the KWM server
- * @param  {String} sessionID [description]
- * @return {Object} The token
- */
-export async function fetchKwmAdminToken(baseURI, sessionID) {
-	const url = (baseURI || '') + '/api/v1/admin/auth/tokens';
-	const payload = {
-		type: 'Token',
-	};
-	if (sessionID) {
-		payload.id = sessionID;
-	}
-
-	return fetch(url, {
-		body: JSON.stringify(payload),
-		method: 'POST',
-	}).then(response => {
-		return response.json();
-	});
-}

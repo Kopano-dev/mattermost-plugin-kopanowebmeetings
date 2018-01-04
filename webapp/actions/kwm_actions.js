@@ -4,7 +4,6 @@ import * as KWM from 'kopano-webmeetings/kwm.js';
 
 import Constants from 'utils/constants.js';
 const {Actions} = Constants;
-import {fetchKwmAdminToken} from 'utils/utils.js';
 import Client from 'client/client.js';
 import {stopUserMedia} from 'utils/user_media.js';
 
@@ -152,24 +151,15 @@ export const connectToKwmServer = () => async (dispatch, getState) => {
 	const {kwm, config} = getState().kwmState;
 	const userId = Selectors.getCurrentUser(getState().mattermostReduxState).id;
 
-	if ( config === null || !config.kwmserver_url ) {
+	if ( config === null || !config.kwmserver_url || !config.token ) {
 		console.error('No config available to create a KWM object');
 		return null;
 	}
 
-	dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_CONNECTING));
+	kwm.connectionOptions.authorizationType = config.token.type;
+	kwm.connectionOptions.authorizationValue = config.token.value;
 
-	try {
-		// Fetch an admin token
-		// TODO: Get the uri of the api from the settings
-		const token = await fetchKwmAdminToken(config.kwmserver_url);
-		kwm.connectionOptions.authorizationType = token.type;
-		kwm.connectionOptions.authorizationValue = token.value;
-	} catch (err) {
-		console.error('error fetching admin token', err);
-		dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_NOT_CONNECTED));
-		return err;
-	}
+	dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_CONNECTING));
 
 	// connect
 	kwm.connect(userId).then(() => {

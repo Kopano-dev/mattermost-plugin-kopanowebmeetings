@@ -1,5 +1,5 @@
-hash: 421d11e2d027508446ce312ef41839f0bfb41f4ac348895f22f18e253f834cd5
-updated: 2017-12-14T21:36:31.440948307+01:00
+hash: 8982d96aa485f64da209243fb626862116177f9119953f1e8061553250489fe9
+updated: 2018-01-04T11:41:21.427938446+01:00
 imports:
 - name: github.com/alecthomas/log4go
   version: 3fbce08846379ec7f4f6bc7fce6dd01ce28fae4c
@@ -7,13 +7,13 @@ imports:
 - name: github.com/gorilla/websocket
   version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
 - name: github.com/mattermost/mattermost-server
-  version: 3890bc7079bf21330efdc45ae2741a4392d99e3c
+  version: 03f5c939deb4a6ab2fd01639b5570799e4118bab
   subpackages:
   - model
   - plugin
   - plugin/rpcplugin
 - name: github.com/nicksnyder/go-i18n
-  version: ca33e78c8a430e2df435b02f63a3944fa8e9ea11
+  version: 0dc1626d56435e9d605a29875701721c54bc9bbd
   subpackages:
   - i18n
   - i18n/bundle
@@ -32,4 +32,8 @@ imports:
   - blowfish
 - name: gopkg.in/yaml.v2
   version: 287cf08546ab5e7e37d55a84f7ed3fd1db036de5
+- name: stash.kopano.io/kwm/kwmserver
+  version: ded291b94ccfda220dfdbcd91932d2b2fe6256bc
+  subpackages:
+  - signaling/api-v1
 testImports: []

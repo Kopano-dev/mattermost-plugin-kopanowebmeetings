@@ -19,6 +19,8 @@ package main
 
 import (
 	"fmt"
+
+	kwmAPIv1 "stash.kopano.io/kwm/kwmserver/signaling/api-v1"
 )
 
 // A Configuration holds the configuration data.
@@ -54,10 +56,11 @@ func (c *Configuration) IsValid() error {
 // ClientConfiguration is the struct to hold client configuration data.
 type ClientConfiguration struct {
 	KWMServerURL string `json:"kwmserver_url"`
-	Token        string `json:"token,omitempty"`
 	StunURI      string `json:"stun_uri,omitempty"`
 	TurnURI      string `json:"turn_uri,omitempty"`
 	TurnUsername string `json:"turn_username,omitempty"`
 	TurnPassword string `json:"turn_password,omitempty"`
 	ExpiresIn    uint64 `json:"expires_in"`
+
+	Token *kwmAPIv1.AdminAuthToken `json:"token,omitempty"`
 }

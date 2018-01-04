@@ -22,5 +22,5 @@ import (
 )
 
 func main() {
-	rpcplugin.Main(&Plugin{})
+	rpcplugin.Main(NewPlugin(nil))
 }

@@ -18,20 +18,53 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"strings"
 	"sync/atomic"
+	"time"
 
 	"github.com/mattermost/mattermost-server/plugin"
+	kwmAPIv1 "stash.kopano.io/kwm/kwmserver/signaling/api-v1"
 )
 
 // Plugin defines the Mattermost plugin interface.
 type Plugin struct {
-	api plugin.API
+	api        plugin.API
+	httpClient *http.Client
 
 	configuration atomic.Value
+}
+
+// NewPlugin creates a new plugin.
+func NewPlugin(httpTransport http.RoundTripper) *Plugin {
+	if httpTransport == nil {
+		httpTransport = &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: (&net.Dialer{
+				Timeout:   30 * time.Second,
+				KeepAlive: 30 * time.Second,
+				DualStack: true,
+			}).DialContext,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+		}
+	}
+
+	httpClient := &http.Client{
+		Timeout:   30 * time.Second,
+		Transport: httpTransport,
+	}
+
+	return &Plugin{
+		httpClient: httpClient,
+	}
 }
 
 // OnActivate implements the Mattermost plugin interface.
@@ -106,9 +139,15 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 
 func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error) {
 	config := p.config()
+
+	token, err := p.getWebMeetingsToken(config, "")
+	if err != nil {
+		return nil, err
+	}
+
 	result := &ClientConfiguration{
 		KWMServerURL: config.KWMServerURL,
-		Token:        "not-implemented",
+		Token:        token,
 		StunURI:      config.StunURI,
 
 		ExpiresIn: 3600, // NOTE(longsleep): Add to configuration.
@@ -123,6 +162,30 @@ func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error)
 	}
 
 	return result, nil
+}
+
+func (p *Plugin) getWebMeetingsToken(config *Configuration, id string) (*kwmAPIv1.AdminAuthToken, error) {
+	data := &kwmAPIv1.AdminAuthToken{
+		Type: "Token",
+	}
+	payload, _ := json.MarshalIndent(data, "", "\t")
+
+	req, _ := http.NewRequest("POST", config.KWMServerInternalURL+"/api/v1/admin/auth/tokens", bytes.NewBuffer(payload))
+	req.Header.Set("Content-Type", "application/json")
+	//req.Header.Set("Authorization", "Bearer "+config.AdminSecret)
+
+	if response, err := p.httpClient.Do(req); err != nil {
+		return nil, err
+	} else if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected HTTP response: %d", response.StatusCode)
+	} else {
+		var token kwmAPIv1.AdminAuthToken
+		if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
+			return nil, err
+		}
+
+		return &token, nil
+	}
 }
 
 func (p *Plugin) handleStatic(rw http.ResponseWriter, req *http.Request) {

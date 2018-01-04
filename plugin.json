@@ -1,55 +1,55 @@
 {
-	"id": "kopanowebmeetings",
-	"name": "Kopano Web Meetings",
-	"description": "Kopano Web Meetings for Mattermost",
-	"backend": {
-		"executable": "kwmmmplugind"
-	},
-	"webapp": {
-		"bundle_path": "/static/kopanowebmeetings_bundle.js"
-	},
-	"settings_schema": {
-		"settings": [
-			{
-				"key": "KWMServerURL",
-				"display_name": "Kopano Web Meetings Server URL",
-				"type": "text",
-				"help_text": "The URL of Kopano Web Meetings Server."
-			},
+  "id": "kopanowebmeetings",
+  "name": "Kopano Web Meetings",
+  "description": "Kopano Web Meetings for Mattermost",
+  "backend": {
+    "executable": "kwmmmplugind"
+  },
+  "webapp": {
+    "bundle_path": "/static/kopanowebmeetings_bundle.js"
+  },
+  "settings_schema": {
+    "settings": [
+      {
+        "key": "KWMServerURL",
+        "display_name": "Kopano Web Meetings Server URL",
+        "type": "text",
+        "help_text": "The URL of Kopano Web Meetings Server."
+      },
       {
         "key": "KWMServerInternalURL",
-        "display_name": "Kopano Web Meetings Server secure interal URL",
+        "display_name": "Kopano Web Meetings Server secure internal URL",
         "type": "text",
         "help_text": "The URL of Kopano Web Meetings Server used for internal connections. This URL should be private and/or firewalled so it can only be accessed from Mattermost."
       },
-			{
-				"key": "StunURI",
-				"display_name": "STUN server URI",
-				"type": "text",
-				"default": "stun:stun.l.google.com:19302",
-				"placeholder": "stun:your.stun.server.local:port",
-				"help_text": "The STUN server URI. Use space to split multiple."
-			},
-			{
-				"key": "TurnURI",
-				"display_name": "TURN server URI",
-				"type": "text",
-				"placeholder": "turn:your.turn.server.local:port",
-				"help_text": "The TURN server URI. Use space to split multiple."
-			},
-			{
-				"key": "TurnUsername",
-				"display_name": "TURN user name",
-				"type": "text",
-				"default": "mattermost-kwm-user",
-				"help_text": "The username to send to TURN server."
-			},
-			{
-				"key": "TurnSharedKey",
-				"display_name": "TURN shared secret",
-				"type": "text",
-				"help_text": "The shared secret as known to the TURN server to create credentials."
-			}
-		]
-	}
+      {
+        "key": "StunURI",
+        "display_name": "STUN server URI",
+        "type": "text",
+        "default": "stun:stun.l.google.com:19302",
+        "placeholder": "stun:your.stun.server.local:port",
+        "help_text": "The STUN server URI. Use space to split multiple."
+      },
+      {
+        "key": "TurnURI",
+        "display_name": "TURN server URI",
+        "type": "text",
+        "placeholder": "turn:your.turn.server.local:port",
+        "help_text": "The TURN server URI. Use space to split multiple."
+      },
+      {
+        "key": "TurnUsername",
+        "display_name": "TURN user name",
+        "type": "text",
+        "default": "mattermost-kwm-user",
+        "help_text": "The username to send to TURN server."
+      },
+      {
+        "key": "TurnSharedKey",
+        "display_name": "TURN shared secret",
+        "type": "text",
+        "help_text": "The shared secret as known to the TURN server to create credentials."
+      }
+    ]
+  }
 }
