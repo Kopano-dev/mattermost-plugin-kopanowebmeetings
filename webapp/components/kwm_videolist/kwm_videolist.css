@@ -3,10 +3,14 @@
 	padding: 12px;
 }
 .kwm-videolist video {
-	width: 100%;
 	background: grey url(white_noise.gif);
 	background-size: cover;
+	height: 210px;
+	max-height: 100%;
+	max-width: 100%;
+	object-fit: cover;
 	position: relative;
+	width: 100%;
 }
 .kwm-videolist .kwm-video-title {
 	position: absolute;
@@ -34,6 +38,14 @@
 	top: 12px;
 	right: 12px;
 	font-size: 0.8em;
+}
+.kwm-videolist .kwm-video-container:nth-child(1n+2) video {
+	-moz-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+	height: 68px;
 }
 
 .kwm-videolist .kwm-call-buttons {
