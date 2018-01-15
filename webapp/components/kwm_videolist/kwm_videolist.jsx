@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
+import * as Selectors from 'mattermost-redux/selectors/entities/users';
+
 import './kwm_videolist.css';
 import {KwmHangUpButton} from 'components/kwm_buttons/kwm_buttons.jsx';
 import {getDisplayName} from 'utils/utils.js';
@@ -30,6 +32,7 @@ class KwmVideoList extends React.Component {
 	}
 
 	render() {
+		const {getCurrentUserId} = this.props;
 		const onHangUp = this.props.onHangUp || (() => console.error('Hangup not implemented'));
 
 		let buttons = '';
@@ -40,6 +43,9 @@ class KwmVideoList extends React.Component {
 				</div>
 			);
 		}
+
+		const currentUserId = getCurrentUserId();
+
 		/* eslint-disable no-nested-ternary */
 		return (
 			<div className='kwm-videolist'>
@@ -47,7 +53,7 @@ class KwmVideoList extends React.Component {
 					const videoProps = {
 						id: 'video-' + caller.user.id,
 						autoPlay: true,
-						muted: false,
+						muted: caller.user.id === currentUserId,
 					};
 
 					return (
@@ -66,10 +72,12 @@ class KwmVideoList extends React.Component {
 KwmVideoList.propTypes = {
 	onHangUp: PropTypes.func,
 	callers: PropTypes.arrayOf(PropTypes.object),
+	getCurrentUserId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
 	callers: state.callers,
+	getCurrentUserId: () => Selectors.getCurrentUserId(state.mattermostReduxState),
 });
 
 export default connect(mapStateToProps)(KwmVideoList);
