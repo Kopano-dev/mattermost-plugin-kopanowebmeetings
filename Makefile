@@ -47,15 +47,26 @@ $(CMDS): vendor | $(BASE) ; $(info building $@ ...) @
 
 .PHONY: webapp
 webapp:
-	$(MAKE) -C webapp build
+	$(MAKE) -C webapp js
+
+.PHONY: webapp-dev
+webapp-dev:
+	$(MAKE) -C webapp js-dev
 
 # Helpers
 
 .PHONY: lint
-lint: vendor | $(BASE) ; $(info running golint ...)	@
-	#@cd $(BASE) && ret=0 && for pkg in $(PKGS); do \
-	#	test -z "$$($(GOLINT) $$pkg | tee /dev/stderr)" || ret=1 ; \
-	#done ; exit $$ret
+lint: go-lint webapp-lint
+
+.PHONY: go-lint
+go-lint: vendor | $(BASE) ; $(info running gotlint ...)	@
+	@cd $(BASE) && ret=0 && for pkg in $(PKGS); do \
+		test -z "$$($(GOLINT) $$pkg | tee /dev/stderr)" || ret=1 ; \
+	done ; exit $$ret
+
+.PHONY: lint
+webapp-lint: ; $(info running webapp lint ...)
+	$(MAKE) -C webapp lint || true
 
 .PHONY: fmt
 fmt: ; $(info running gofmt ...)	@

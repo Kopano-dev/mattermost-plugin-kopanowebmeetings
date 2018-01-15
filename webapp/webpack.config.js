@@ -1,15 +1,25 @@
-/* eslint-disable */
+/* eslint-env node */
+/* eslint func-names: ["off", "as-needed"] */
+/* eslint-disable no-process-env */
+
+const fs = require('fs');
 const path = require('path');
+const BannerPlugin = require('webpack').BannerPlugin;
+const DefinePlugin = require('webpack').DefinePlugin;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
+const buildVersion = process.env.BUILD_VERSION || 'v0.0.0-no-proper-build';
+const buildDate = process.env.BUILD_DATE || new Date();
 
 module.exports = function(env) {
-	const isProd = !!(env && env.prod);
+	const isProd = Boolean(env && env.prod);
 
-	return {
+	const config = {
 		context: path.resolve(__dirname),
 		entry: './index.js',
 		output: {
 			path: path.resolve(__dirname, 'build'),
-			filename: 'kopanowebmeetings_bundle.js'
+			filename: 'kopanowebmeetings_bundle.js',
 		},
 		module: {
 			rules: [
@@ -23,30 +33,30 @@ module.exports = function(env) {
 								presets: [
 									'react',
 									['es2015', {modules: false}],
-									'stage-0'
+									'stage-0',
 								],
 								plugins: ['transform-runtime'],
-								cacheDirectory: true
-							}
+								cacheDirectory: true,
+							},
 						},
 						{
 							loader: 'eslint-loader',
 							options: {
-								configFile: isProd ? '.eslintrc.prod.json' : '.eslintrc.json'
-							}
-						}
-					]
+								configFile: isProd ? '.eslintrc.prod.json' : '.eslintrc.json',
+							},
+						},
+					],
 				},
 				{
 					test: /\.css$/,
 					use: [
 						{
-							loader: "style-loader"
+							loader: 'style-loader',
 						},
 						{
-							loader: "css-loader"
-						}
-					]
+							loader: 'css-loader',
+						},
+					],
 				},
 				{
 					test: /\.(png|eot|tiff|svg|woff2|woff|ttf|gif|mp3|jpg)$/,
@@ -55,25 +65,60 @@ module.exports = function(env) {
 							loader: 'file-loader',
 							options: {
 								name: 'static/[hash].[ext]',
-								publicPath: '/plugins/kopanowebmeetings/'
-							}
+								publicPath: '/plugins/kopanowebmeetings/',
+							},
 						},
 						{
 							loader: 'image-webpack-loader',
-							options: {}
-						}
-					]
-				}
-			]
+							options: {},
+						},
+					],
+				},
+			],
 		},
 		resolve: {
 			modules: [
 				'node_modules',
 				'non_npm_dependencies',
-				path.resolve(__dirname)
+				path.resolve(__dirname),
 			],
-			extensions: ['.js', '.jsx']
-		}
+			extensions: ['.js', '.jsx'],
+		},
+		plugins: [
+		],
+	};
+
+	if (isProd) {
+		config.devtool = 'source-map';
+		config.plugins.push.apply(config.plugins, [
+			new UglifyJsPlugin({
+				sourceMap: true,
+				uglifyOptions: {
+					ecma: 6,
+					warnings: true,
+				},
+			}),
+			new LicenseWebpackPlugin({
+				pattern: /^(MIT|ISC|BSD.*)$/,
+				unacceptablePattern: /GPL/,
+				abortOnUnacceptableLicense: true,
+				perChunkOutput: false,
+				outputFilename: '3rdparty-licenses.txt',
+			}),
+		]);
+	} else {
+		config.devtool = 'inline-source-map';
 	}
+
+	config.plugins.push.apply(config.plugins, [
+		new DefinePlugin({
+			__VERSION__: JSON.stringify(buildVersion),
+		}),
+		new BannerPlugin(
+			fs.readFileSync(path.resolve(__dirname, '..', 'LICENSE.txt')).toString() +
+				'\n\n@version ' + buildVersion + ' (' + buildDate + ')'
+		),
+	]);
+
+	return config;
 };
-/* eslint-enable */
