@@ -1,15 +1,18 @@
+const VIDEO_WIDTH = 640;
+const VIDEO_HEIGHT = 360;
+const MIN_ASPECT = 1.777;
+const MAX_ASPECT = 1.778;
+
 /* eslint-disable no-magic-numbers */
 const defaultConstraints = {
 	audio: true,
 	video: {
-		width: 640,
-		height: 480,
-		frameRate: {
-			ideal: 60,
-		},
+		minAspectRatio: MIN_ASPECT,
+		maxAspectRatio: MAX_ASPECT,
+		width: VIDEO_WIDTH,
+		height: VIDEO_HEIGHT,
 	},
 };
-defaultConstraints.video = true;
 /* eslint-enable no-magic-numbers */
 
 export const getUserMedia = constraints => navigator.mediaDevices.getUserMedia(constraints || defaultConstraints);
