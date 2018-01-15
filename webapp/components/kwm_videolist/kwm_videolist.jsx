@@ -13,11 +13,9 @@ class KwmVideoList extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		let hash = '';
-		/* eslint-disable no-nested-ternary */
-		nextProps.callers.sort((a, b) => (a.focus ? -1 : (b.focus ? 1 : 0))).forEach(caller => {
+		nextProps.callers.sort((a, b) => (a.focus ? -1 : (b.focus ? 1 : 0))).forEach(caller => { // eslint-disable-line no-nested-ternary
 			hash += '-' + caller.user.id + (caller.stream ? '1' : '0');
 		});
-		/* eslint-enable no-nested-ternary */
 
 		const shouldUpdate = hash !== this.callersHash;
 		this.callersHash = hash;
@@ -46,10 +44,9 @@ class KwmVideoList extends React.Component {
 
 		const currentUserId = getCurrentUserId();
 
-		/* eslint-disable no-nested-ternary */
 		return (
 			<div className='kwm-videolist'>
-				{this.props.callers.sort((a, b) => (a.focus ? -1 : (b.focus ? 1 : 0))).map(caller => {
+				{this.props.callers.sort((a, b) => (a.focus ? -1 : (b.focus ? 1 : 0))).map(caller => { // eslint-disable-line no-nested-ternary
 					const videoProps = {
 						id: 'video-' + caller.user.id,
 						autoPlay: true,
@@ -66,7 +63,6 @@ class KwmVideoList extends React.Component {
 				{buttons}
 			</div>
 		);
-		/* eslint-enable no-nested-ternary */
 	}
 }
 KwmVideoList.propTypes = {

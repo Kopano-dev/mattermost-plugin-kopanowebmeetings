@@ -3,7 +3,6 @@ const VIDEO_HEIGHT = 360;
 const MIN_ASPECT = 1.777;
 const MAX_ASPECT = 1.778;
 
-/* eslint-disable no-magic-numbers */
 const defaultConstraints = {
 	audio: true,
 	video: {
@@ -13,7 +12,6 @@ const defaultConstraints = {
 		height: VIDEO_HEIGHT,
 	},
 };
-/* eslint-enable no-magic-numbers */
 
 export const getUserMedia = constraints => navigator.mediaDevices.getUserMedia(constraints || defaultConstraints);
 

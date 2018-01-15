@@ -6,14 +6,14 @@ import {Modal} from 'react-bootstrap';
 
 import {handleError} from 'actions/kwm_actions.js';
 
-class KwmMessagebox extends React.Component {
+class KwmMessagebox extends React.PureComponent {
 	render() {
-		if ( !this.props.show ) {
+		if (!this.props.show) {
 			return null;
 		}
 
 		return (
-			<Modal.Dialog show={this.show}>
+			<Modal.Dialog show={this.props.show}>
 				<Modal.Header closeButton={true} onHide={this.props.handleError}>
 					<Modal.Title>{'Kopano Web Meetings'}</Modal.Title>
 				</Modal.Header>

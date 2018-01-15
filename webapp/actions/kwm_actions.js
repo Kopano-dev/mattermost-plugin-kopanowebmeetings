@@ -119,16 +119,16 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 		/* eslint-disable no-nested-ternary, multiline-ternary, no-undefined */
 		const status =
 			event.connecting ? Constants.KWM_CONN_STATUS_CONNECTING : (
-			event.connected ? Constants.KWM_CONN_STATUS_CONNECTED : (
-			event.reconnecting ? Constants.KWM_CONN_STATUS_RECONNECTING : undefined
-		));
-		/* eslint-enable no-nested-ternary */
+				event.connected ? Constants.KWM_CONN_STATUS_CONNECTED : (
+					event.reconnecting ? Constants.KWM_CONN_STATUS_RECONNECTING : undefined
+				));
+		/* eslint-enable no-nested-ternary, multiline-ternary, no-undefined */
 		setConnectionStatus(status);
 	};
 
 	kwm.onerror = event => {
 		console.error('kwm error', event);
-//		setKwmError(event);
+		//setKwmError(event);
 	};
 
 	// Add the listener for events triggered by the remote user
@@ -197,8 +197,8 @@ export const connectToKwmServer = () => async (dispatch, getState) => {
 	}).catch(err => {
 		console.error('connect to KWM failed', err);
 		dispatch(setConnectionStatus(Constants.KWM_CONN_NOT_CONNECTED));
-		// TODO: handle error
-		return err;
+
+		throw new Error('failed to connect to KWM: ' + err);
 	});
 };
 

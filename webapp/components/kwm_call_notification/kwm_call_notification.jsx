@@ -54,7 +54,6 @@ KwmCallNotification.propTypes = {
 const mapStateToProps = state => ({
 	open: state.callNotification.open,
 	calledBy: state.callNotification.calledBy,
-	state,
 });
 
 export default connect(mapStateToProps)(KwmCallNotification);

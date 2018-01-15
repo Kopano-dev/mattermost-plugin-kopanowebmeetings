@@ -12,7 +12,7 @@ import KwmController from 'components/kwm_controller.jsx';
  * The state of the Mattermost Redux store will be added to the state of our own store
  * in the property 'mattermostReduxState'.
  */
-class KwmPlugin extends React.Component {
+class KwmPlugin extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
@@ -22,7 +22,7 @@ class KwmPlugin extends React.Component {
 		kwmStore.mmDispatch = this.props.dispatch;
 	}
 
-	render(props) {
+	render(props) { // eslint-disable-line class-methods-use-this
 		return (
 			<Provider store={kwmStore}>
 				<KwmController />

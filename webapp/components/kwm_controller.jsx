@@ -17,21 +17,6 @@ import KwmVideoList from 'components/kwm_videolist/kwm_videolist.jsx';
 import KwmMessagebox from 'components/kwm_messagebox/kwm_messagebox.jsx';
 
 class KwmController extends React.PureComponent {
-	static propTypes = {
-		getConfig: PropTypes.func.isRequired,
-		createKwmObj: PropTypes.func.isRequired,
-		addKwmListeners: PropTypes.func.isRequired,
-		connectToKwmServer: PropTypes.func.isRequired,
-		kwm: PropTypes.object,
-		removeAllCallers: PropTypes.func.isRequired,
-		closeKwmSidebar: PropTypes.func.isRequired,
-		getCurrentUser: PropTypes.func.isRequired,
-		getProfilesInCurrentChannel: PropTypes.func.isRequired,
-		getStatusForUserId: PropTypes.func.isRequired,
-		callersCount: PropTypes.number.isRequired,
-		connectionStatus: PropTypes.string.isRequired,
-	}
-
 	constructor(props) {
 		super(props);
 
@@ -141,7 +126,7 @@ class KwmController extends React.PureComponent {
 
 		kwm.webrtc.doCall(remoteUserId);
 
-		if ( stream ) {
+		if (stream) {
 			addLocalStream(stream);
 			updateCaller(getCurrentUser().id, {stream});
 			kwm.webrtc.setLocalStream(stream);
@@ -189,6 +174,20 @@ class KwmController extends React.PureComponent {
 		);
 	}
 }
+KwmController.propTypes = {
+	getConfig: PropTypes.func.isRequired,
+	createKwmObj: PropTypes.func.isRequired,
+	addKwmListeners: PropTypes.func.isRequired,
+	connectToKwmServer: PropTypes.func.isRequired,
+	kwm: PropTypes.object,
+	removeAllCallers: PropTypes.func.isRequired,
+	closeKwmSidebar: PropTypes.func.isRequired,
+	getCurrentUser: PropTypes.func.isRequired,
+	getProfilesInCurrentChannel: PropTypes.func.isRequired,
+	getStatusForUserId: PropTypes.func.isRequired,
+	callersCount: PropTypes.number.isRequired,
+	connectionStatus: PropTypes.string.isRequired,
+};
 
 const mapStateToProps = state => {
 	return {

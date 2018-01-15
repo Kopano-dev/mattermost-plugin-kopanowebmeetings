@@ -10,8 +10,6 @@ import KwmHeader from 'components/kwm_header/kwm_header.jsx';
 import {removeClassFromElement, addClassToElement} from 'utils/utils.js';
 
 class KwmSidebar extends React.Component {
-
-//const KwmSidebar = props => {
 	render() {
 		const show = () => {
 			removeClassFromElement('.app__body .inner-wrap', 'move--right');

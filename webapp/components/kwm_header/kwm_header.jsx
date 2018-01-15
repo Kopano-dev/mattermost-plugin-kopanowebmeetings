@@ -17,7 +17,6 @@ const KwmHeader = props => (
 		</div>
 	</div>
 );
-
 KwmHeader.propTypes = {
 	title: PropTypes.string.isRequired,
 	onClose: PropTypes.func.isRequired,
