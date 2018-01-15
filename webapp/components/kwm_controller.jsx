@@ -16,7 +16,7 @@ import KwmCallNotification from 'components/kwm_call_notification/kwm_call_notif
 import KwmVideoList from 'components/kwm_videolist/kwm_videolist.jsx';
 import KwmMessagebox from 'components/kwm_messagebox/kwm_messagebox.jsx';
 
-class KwmController extends React.Component {
+class KwmController extends React.PureComponent {
 	static propTypes = {
 		getConfig: PropTypes.func.isRequired,
 		createKwmObj: PropTypes.func.isRequired,
@@ -42,12 +42,18 @@ class KwmController extends React.Component {
 	}
 
 	componentDidMount() {
+		this.initialize();
+	}
+
+	async initialize() {
 		const {getConfig, createKwmObj, addKwmListeners, connectToKwmServer} = this.props;
 
-		getConfig().then(config => {
-			createKwmObj();
-			addKwmListeners();
-			connectToKwmServer();
+		return getConfig().then(() => {
+			return createKwmObj();
+		}).then(() => {
+			return addKwmListeners();
+		}).then(() => {
+			return connectToKwmServer();
 		});
 	}
 
@@ -105,10 +111,7 @@ class KwmController extends React.Component {
 		closeKwmSidebar();
 	}
 
-	/**
-	 * Event handler for when the user has clicked a button to call another user
-	 * @param  {String}  userId The id of the remote user
-	 */
+	// Event handler for when the user has clicked a button to call another user
 	async onInitializeVideoCall() {
 		const {
 			kwm, getCurrentUser, getUser, getProfilesInCurrentChannel, addCaller, updateCaller, addLocalStream,
@@ -206,13 +209,13 @@ const mapDispatchToProps = dispatch => {
 		...bindActionCreators({
 			...Actions,
 		}, dispatch),
-/*
+		/*
 		We could add actions from the Mattermost Redux store if needed with the following code:
 
 		...bindActionCreators({
 			// Add action creators of Mattermost here
 		}, kwmStore.mmDispatch)
-*/
+		*/
 	};
 };
 

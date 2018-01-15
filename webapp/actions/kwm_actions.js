@@ -7,13 +7,39 @@ const {Actions} = Constants;
 import Client from 'client/client.js';
 import {stopUserMedia} from 'utils/user_media.js';
 
+export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+
 // Thunk
 export const getConfig = () => async (dispatch, getState) => {
 	dispatch({type: Actions.KWM_GET_CONFIG});
 
-	return Client.getConfig().then(config => {
-		dispatch(setConfig(config));
-		return config;
+	const maxDelay = 20000;
+	return new Promise(async (resolve, reject) => {
+		const retryDelay = 500;
+		let retryCount = 0;
+
+		while (true) { // eslint-disable-line no-constant-condition
+			try {
+				console.info('fetching KWM config ...');
+				const config = await Client.getConfig(); // eslint-disable-line no-await-in-loop
+				dispatch(setConfig(config));
+				resolve(config);
+				return;
+			} catch (e) {
+				console.warn('failed to get KWM config - retrying');
+				retryCount++;
+				if (retryCount >= 100) {
+					reject(new Error('failed to get KWM config: ' + e));
+					return;
+				}
+			}
+
+			let t = retryCount * retryDelay;
+			if (t > maxDelay) {
+				t = maxDelay;
+			}
+			await delay(t); // eslint-disable-line no-await-in-loop
+		}
 	});
 };
 
@@ -23,23 +49,43 @@ export const setConfig = config => ({
 });
 
 // Thunk, because we need the state
-export const createKwmObj = () => (dispatch, getState) => {
+export const createKwmObj = () => async (dispatch, getState) => {
 	const {config} = getState().kwmState;
+
 	if ( config === null || !config.kwmserver_url ) {
-		console.error('No config available to create a KWM object');
-		return null;
+		return Promise.reject(new Error('No config available to create a KWM object'));
+	}
+	if ( !config.kwmserver_url || !config.token ) {
+		return Promise.reject(new Error('No KWM server URL or token in KWM config'));
 	}
 
-	const options = {};
+	const options = {
+		authorizationType: config.token.type,
+		authorizationValue: config.token.value,
+	};
+	const iceServers = [
+	];
+	if (config.stun_uri) {
+		iceServers.push({
+			urls: config.stun_uri.split(' '),
+		});
+	}
+	if (config.turn_uri) {
+		const s = {
+			urls: config.turn_uri.split(' '),
+		};
+		if (config.turn_username) {
+			s.username = config.turn_username;
+		}
+		if (config.turn_password) {
+			s.credential = config.turn_password;
+		}
+		iceServers.push(s);
+	}
+
 	const kwm = new KWM(config.kwmserver_url, options);
-	// Store a reference to the options in the kwm object
-	kwm.connectionOptions = options;
 	kwm.webrtc.config = {
-		iceServers: [
-			{
-				url: config.stun_uri || 'stun:stun.l.google.com:19302',
-			},
-		],
+		iceServers,
 	};
 
 	dispatch({
@@ -47,7 +93,7 @@ export const createKwmObj = () => (dispatch, getState) => {
 		kwm,
 	});
 
-	return kwm;
+	return Promise.resolve(kwm);
 };
 
 export const setConnectionStatus = status => ({
@@ -66,7 +112,7 @@ export const handleError = () => ({
 });
 
 // Thunk, because we need the state
-export const addKwmListeners = () => (dispatch, getState) => {
+export const addKwmListeners = () => async (dispatch, getState) => {
 	const {kwm} = getState().kwmState;
 
 	kwm.onstatechanged = event => {
@@ -132,30 +178,19 @@ export const addKwmListeners = () => (dispatch, getState) => {
 			stream: event.stream,
 		}));
 	};
+
+	return Promise.resolve(kwm);
 };
 
-/**
- * Thunk that will connect to the KWM server.
- * @param  {KWM} kwm Instance of the KWM class that is used to connect to the server.
- * @param  {String} userId The id of the connecting user
- * @return {Boolean|Object} True if the connection succeeded. Error object otherwise.
- */
+// Thunk that will connect to the KWM server.
 export const connectToKwmServer = () => async (dispatch, getState) => {
-	const {kwm, config} = getState().kwmState;
+	const {kwm} = getState().kwmState;
 	const userId = Selectors.getCurrentUser(getState().mattermostReduxState).id;
-
-	if ( config === null || !config.kwmserver_url || !config.token ) {
-		console.error('No config available to create a KWM object');
-		return null;
-	}
-
-	kwm.connectionOptions.authorizationType = config.token.type;
-	kwm.connectionOptions.authorizationValue = config.token.value;
 
 	dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_CONNECTING));
 
 	// connect
-	kwm.connect(userId).then(() => {
+	return kwm.connect(userId).then(() => {
 		console.log('connected to KWM', kwm);
 		dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_CONNECTED));
 		return true;
