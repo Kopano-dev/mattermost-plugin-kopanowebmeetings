@@ -35,19 +35,19 @@ class KwmController extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const {getConfig, createKwmObj, addKwmListeners, connectToKwmServer} = this.props;
-
 		this.onInitializeVideoCall = this.onInitializeVideoCall.bind(this);
 		this.onAcceptCall = this.onAcceptCall.bind(this);
 		this.onRejectCall = this.onRejectCall.bind(this);
 		this.onHangUp = this.onHangUp.bind(this);
+	}
+
+	componentDidMount() {
+		const {getConfig, createKwmObj, addKwmListeners, connectToKwmServer} = this.props;
 
 		getConfig().then(config => {
 			createKwmObj();
 			addKwmListeners();
 			connectToKwmServer();
-		}).catch(err => {
-			console.error('Controller. caught an error', err);
 		});
 	}
 

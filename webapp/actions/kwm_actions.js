@@ -10,18 +10,11 @@ import {stopUserMedia} from 'utils/user_media.js';
 // Thunk
 export const getConfig = () => async (dispatch, getState) => {
 	dispatch({type: Actions.KWM_GET_CONFIG});
-	let config = null;
-	try {
-		config = await Client.getConfig();
-	} catch (err) {
-		//TODO: Handle error
-		console.error('Actions.getConfig. caught error', err);
-		return null;
-	}
 
-	dispatch(setConfig(config));
-
-	return config;
+	return Client.getConfig().then(config => {
+		dispatch(setConfig(config));
+		return config;
+	});
 };
 
 export const setConfig = config => ({
