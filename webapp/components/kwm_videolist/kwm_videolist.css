@@ -31,9 +31,8 @@
 .kwm-videolist .kwm-video-container:nth-child(1n+2) {
 	position: absolute;
 	width: 30%;
-	border: 1px solid white;
-	top: 15px;
-	right: 15px;
+	top: 12px;
+	right: 12px;
 	font-size: 0.8em;
 }
 
