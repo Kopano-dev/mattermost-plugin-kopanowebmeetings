@@ -14,13 +14,13 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null |
 all: js
 
 $(DIST): ; $(info creating dist path ...) @
-	mkdir_p $(DIST)
+	mkdir $(DIST)
 
 .PHONY: js
 js: vendor | $(DIST) ; $(info building Webapp plugin ...)    @
 	@rm -rf build
 
-	@BUILD_VERSION=$(VERSION) BUILD_DATE=$(DATE) $(YARN) webpack -p --env.prod --display-error-details --verbose --progress
+	@BUILD_VERSION=$(VERSION) BUILD_DATE=$(DATE) $(YARN) webpack --env.prod --display-error-details --verbose --progress
 
 .PHONY: js-dev
 js-dev: vendor | $(DIST) ; $(info building and watching Webapp plugin ...)    @

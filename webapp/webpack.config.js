@@ -25,7 +25,7 @@ module.exports = function(env) {
 			rules: [
 				{
 					test: /\.(js|jsx)?$/,
-					exclude: /(node_modules|non_npm_dependencies)/,
+					exclude: /node_modules/,
 					use: [
 						{
 							loader: 'babel-loader',
@@ -79,7 +79,6 @@ module.exports = function(env) {
 		resolve: {
 			modules: [
 				'node_modules',
-				'non_npm_dependencies',
 				path.resolve(__dirname),
 			],
 			extensions: ['.js', '.jsx'],
@@ -89,7 +88,7 @@ module.exports = function(env) {
 	};
 
 	if (isProd) {
-		config.devtool = 'source-map';
+		config.devtool = 'hidden-source-map';
 		config.plugins.push.apply(config.plugins, [
 			new UglifyJsPlugin({
 				sourceMap: true,
@@ -98,25 +97,26 @@ module.exports = function(env) {
 					warnings: true,
 				},
 			}),
-			new LicenseWebpackPlugin({
-				pattern: /^(MIT|ISC|BSD.*)$/,
-				unacceptablePattern: /GPL/,
-				abortOnUnacceptableLicense: true,
-				perChunkOutput: false,
-				outputFilename: '3rdparty-licenses.txt',
-			}),
 		]);
 	} else {
 		config.devtool = 'inline-source-map';
 	}
 
 	config.plugins.push.apply(config.plugins, [
+		new LicenseWebpackPlugin({
+			pattern: /^(MIT|ISC|BSD.*)$/,
+			unacceptablePattern: /GPL/,
+			abortOnUnacceptableLicense: true,
+			perChunkOutput: false,
+			outputFilename: '3rdparty-licenses.txt',
+		}),
 		new DefinePlugin({
 			__VERSION__: JSON.stringify(buildVersion),
+			'process.env.NODE_ENV': isProd ? '"production"' : '"development"',
 		}),
 		new BannerPlugin(
 			fs.readFileSync(path.resolve(__dirname, '..', 'LICENSE.txt')).toString() +
-				'\n\n@version ' + buildVersion + ' (' + buildDate + ')'
+				'\n\n@version ' + buildVersion + ' (' + buildDate + ')' + (isProd ? '' : ' dev')
 		),
 	]);
 

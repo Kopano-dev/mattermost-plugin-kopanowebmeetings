@@ -1,6 +1,6 @@
 import * as Selectors from 'mattermost-redux/selectors/entities/users';
 
-import * as KWM from 'kopano-webmeetings/kwm.js';
+import * as KWM from 'kwmjs';
 
 import Constants from 'utils/constants.js';
 const {Actions} = Constants;
