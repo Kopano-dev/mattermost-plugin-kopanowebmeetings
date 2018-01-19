@@ -13,14 +13,14 @@ export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeo
 export const getConfig = () => async (dispatch, getState) => {
 	dispatch({type: Actions.KWM_GET_CONFIG});
 
-	const maxDelay = 20000;
 	return new Promise(async (resolve, reject) => {
+		const maxDelay = 20000;
+		const maxRetryCount = 100;
 		const retryDelay = 500;
 		let retryCount = 0;
 
 		while (true) { // eslint-disable-line no-constant-condition
 			try {
-				console.info('fetching KWM config ...');
 				const config = await Client.getConfig(); // eslint-disable-line no-await-in-loop
 				dispatch(setConfig(config));
 				resolve(config);
@@ -28,7 +28,7 @@ export const getConfig = () => async (dispatch, getState) => {
 			} catch (e) {
 				console.warn('failed to get KWM config - retrying');
 				retryCount++;
-				if (retryCount >= 100) {
+				if (retryCount >= maxRetryCount) {
 					reject(new Error('failed to get KWM config: ' + e));
 					return;
 				}
@@ -135,20 +135,16 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 	kwm.webrtc.onpeer = event => {
 		switch (event.event) {
 			case 'incomingcall': {
-				console.log('incoming call', event);
 				const calledById = event.record.user;
 				dispatch(openCallNotification(Selectors.getUser(getState().mattermostReduxState, calledById)));
 				break;
 			}
 			case 'newcall':
-				console.log('newcall');
 				break;
 			case 'destroycall':
-				console.log('destroycall');
 				dispatch(destroyCall());
 				break;
 			case 'abortcall': {
-				console.log('abortcall', event);
 				let message = 'Call aborted';
 				if ( event.details === 'reject_busy' ) {
 					message = 'The user you are calling is aleady in another call.';
@@ -164,10 +160,9 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 				break;
 			}
 			case 'pc.error':
-				console.log('pc.error');
 				break;
 			default:
-				console.log('unknown peer event: ', event.event, event);
+				// Unknown peer event
 		}
 	};
 
@@ -191,7 +186,6 @@ export const connectToKwmServer = () => async (dispatch, getState) => {
 
 	// connect
 	return kwm.connect(userId).then(() => {
-		console.log('connected to KWM', kwm);
 		dispatch(setConnectionStatus(Constants.KWM_CONN_STATUS_CONNECTED));
 		return true;
 	}).catch(err => {

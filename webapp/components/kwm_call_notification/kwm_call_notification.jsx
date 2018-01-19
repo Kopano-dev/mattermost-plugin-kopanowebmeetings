@@ -10,14 +10,12 @@ import * as Utils from 'utils/utils.js';
 import {cameraOutlined} from 'utils/icons.jsx';
 
 const KwmCallNotification = props => {
-	const {open, calledBy} = props;
-
-	if ( !open ) {
+	if ( !props.open ) {
 		return null;
 	}
 
-	const userName = Utils.getDisplayName(calledBy);
-	const src = Utils.imageURLForUser(calledBy);
+	const userName = Utils.getDisplayName(props.calledBy);
+	const src = Utils.imageURLForUser(props.calledBy);
 
 	const onAccept = () => props.onAccept(props.calledBy);
 	const onReject = () => props.onReject(props.calledBy);

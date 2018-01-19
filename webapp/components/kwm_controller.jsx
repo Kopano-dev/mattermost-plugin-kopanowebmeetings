@@ -175,10 +175,6 @@ class KwmController extends React.PureComponent {
 	}
 }
 KwmController.propTypes = {
-	getConfig: PropTypes.func.isRequired,
-	createKwmObj: PropTypes.func.isRequired,
-	addKwmListeners: PropTypes.func.isRequired,
-	connectToKwmServer: PropTypes.func.isRequired,
 	kwm: PropTypes.object,
 	removeAllCallers: PropTypes.func.isRequired,
 	closeKwmSidebar: PropTypes.func.isRequired,
