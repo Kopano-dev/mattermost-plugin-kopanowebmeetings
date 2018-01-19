@@ -19,6 +19,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -121,9 +122,9 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	result, err := p.getClientConfiguration(userID)
+	result, err := p.getClientConfiguration(req.Context(), userID)
 	if err != nil {
-		log.Println("kwm plugin error while getting client configration", err)
+		log.Printf("kwm plugin error %T while getting client configration: %v", err, err)
 		http.Error(rw, "", http.StatusInternalServerError)
 		return
 	}
@@ -137,10 +138,10 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 	enc.Encode(result)
 }
 
-func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error) {
+func (p *Plugin) getClientConfiguration(ctx context.Context, id string) (*ClientConfiguration, error) {
 	config := p.config()
 
-	token, err := p.getWebMeetingsToken(config, "")
+	token, err := p.getWebMeetingsToken(ctx, config, "")
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +165,7 @@ func (p *Plugin) getClientConfiguration(id string) (*ClientConfiguration, error)
 	return result, nil
 }
 
-func (p *Plugin) getWebMeetingsToken(config *Configuration, id string) (*kwmAPIv1.AdminAuthToken, error) {
+func (p *Plugin) getWebMeetingsToken(ctx context.Context, config *Configuration, id string) (*kwmAPIv1.AdminAuthToken, error) {
 	data := &kwmAPIv1.AdminAuthToken{
 		Type: "Token",
 	}
@@ -174,18 +175,24 @@ func (p *Plugin) getWebMeetingsToken(config *Configuration, id string) (*kwmAPIv
 	req.Header.Set("Content-Type", "application/json")
 	//req.Header.Set("Authorization", "Bearer "+config.AdminSecret)
 
-	if response, err := p.httpClient.Do(req); err != nil {
+	response, err := p.httpClient.Do(req.WithContext(ctx))
+	if err != nil {
 		return nil, err
-	} else if response.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected HTTP response: %d", response.StatusCode)
-	} else {
-		var token kwmAPIv1.AdminAuthToken
-		if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
-			return nil, err
-		}
-
-		return &token, nil
 	}
+	switch response.StatusCode {
+	case http.StatusOK:
+		// breaks
+	default:
+		// Unknown status code.
+		return nil, fmt.Errorf("unexpected HTTP response: %d", response.StatusCode)
+	}
+
+	var token kwmAPIv1.AdminAuthToken
+	if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
+		return nil, err
+	}
+
+	return &token, nil
 }
 
 func (p *Plugin) handleStatic(rw http.ResponseWriter, req *http.Request) {
