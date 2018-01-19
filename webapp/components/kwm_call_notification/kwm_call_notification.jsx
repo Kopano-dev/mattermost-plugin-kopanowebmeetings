@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import './kwm_call_notification.css';
-import ring from 'sounds/telephone-ring-01a.mp3';
+import ring from 'sounds/ring.mp3';
 
 import {KwmCallButton, KwmHangUpButton} from 'components/kwm_buttons/kwm_buttons.jsx';
 import * as Utils from 'utils/utils.js';
