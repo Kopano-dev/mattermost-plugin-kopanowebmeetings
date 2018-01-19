@@ -127,6 +127,7 @@ dist: webapp/build/kopanowebmeetings_bundle.js plugin.json ; $(info building dis
 	cp -avf ../bin/* "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avr ../webapp/build "${PACKAGE_NAME}-${VERSION}/webapp" && \
 	cp -avr ../plugin.json "${PACKAGE_NAME}-${VERSION}" && \
+	sed -i s/0.0.0-no-proper-build/${VERSION}/g "${PACKAGE_NAME}-${VERSION}/plugin.json" && \
 	tar --owner=0 --group=0 -czvf ${PACKAGE_NAME}-${VERSION}.tar.gz "${PACKAGE_NAME}-${VERSION}" && \
 	cd ..
 

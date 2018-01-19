@@ -1,7 +1,8 @@
 {
   "id": "kopanowebmeetings",
   "name": "Kopano Web Meetings",
-  "description": "Kopano Web Meetings for Mattermost",
+  "description": "Kopano Web Meetings for Mattermost.",
+	"version": "0.0.0-no-proper-build",
   "backend": {
     "executable": "kwmmmplugind"
   },
