@@ -48,21 +48,14 @@ export const setConfig = config => ({
 	config,
 });
 
-// Thunk, because we need the state
-export const createKwmObj = () => async (dispatch, getState) => {
-	const {config} = getState().kwmState;
+export const updateKwmWebRTCConfig = () => async (dispatch, getState) => {
+	const {kwm, config} = getState().kwmState;
 
 	if ( config === null || !config.kwmserver_url ) {
-		return Promise.reject(new Error('No config available to create a KWM object'));
-	}
-	if ( !config.kwmserver_url || !config.token ) {
-		return Promise.reject(new Error('No KWM server URL or token in KWM config'));
+		throw new Error('No config available to update KWM WebRTC config');
 	}
 
-	const options = {
-		authorizationType: config.token.type,
-		authorizationValue: config.token.value,
-	};
+	// Build ICE servers from values in config.
 	const iceServers = [
 	];
 	if (config.stun_uri) {
@@ -83,10 +76,34 @@ export const createKwmObj = () => async (dispatch, getState) => {
 		iceServers.push(s);
 	}
 
-	const kwm = new KWM(config.kwmserver_url, options);
-	kwm.webrtc.config = {
-		iceServers,
+	// Update KWM WebRTC config.
+	kwm.webrtc.config.iceServers = iceServers;
+
+	dispatch({
+		type: Actions.KWM_WEBRTC_CONFIG_UPDATED,
+		config: kwm.webrtc.config,
+	});
+
+	return kwm.webrtc.config;
+};
+
+// Thunk, because we need the state
+export const createKwmObj = () => async (dispatch, getState) => {
+	const {config} = getState().kwmState;
+
+	if ( config === null || !config.kwmserver_url ) {
+		return Promise.reject(new Error('No config available to create a KWM object'));
+	}
+	if ( !config.kwmserver_url || !config.token ) {
+		return Promise.reject(new Error('No KWM server URL or token in KWM config'));
+	}
+
+	const options = {
+		authorizationType: config.token.type,
+		authorizationValue: config.token.value,
 	};
+	const kwm = new KWM(config.kwmserver_url, options);
+	kwm.webrtc.config = {}; // Remove all potential defaults.
 
 	dispatch({
 		type: Actions.KWM_OBJ_CREATED,

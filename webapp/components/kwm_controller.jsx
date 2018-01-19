@@ -31,14 +31,43 @@ class KwmController extends React.PureComponent {
 	}
 
 	async initialize() {
-		const {getConfig, createKwmObj, addKwmListeners, connectToKwmServer} = this.props;
+		const {getConfig, updateKwmWebRTCConfig, createKwmObj, addKwmListeners, connectToKwmServer} = this.props;
 
-		return getConfig().then(() => {
-			return createKwmObj();
-		}).then(() => {
-			return addKwmListeners();
-		}).then(() => {
-			return connectToKwmServer();
+		const retryInterval = 1.112;
+		const maxRetryInterval = 20;
+		let retry = 0;
+		const refresh = async (config, update = false) => {
+			let c = config;
+			if (update) {
+				try {
+					c = await getConfig();
+					await updateKwmWebRTCConfig();
+					retry = 0;
+				} catch (e) {
+					// Failed to refresh config.
+					retry++;
+					let i = retryInterval * retry;
+					if (i > maxRetryInterval) {
+						i = maxRetryInterval;
+					}
+					c = {
+						expires_in: i,
+					};
+				}
+			}
+			const when = (c.expires_in / 100) * 90 * 1000; // eslint-disable-line no-magic-numbers
+
+			// TODO(longsleep): Check behavior when laptop was asleep / or when clock changes.
+			setTimeout(refresh, when, c, true);
+		};
+
+		return getConfig().then(async config => {
+			await createKwmObj();
+			await updateKwmWebRTCConfig();
+			await addKwmListeners();
+			await connectToKwmServer();
+
+			await refresh(config, false);
 		});
 	}
 

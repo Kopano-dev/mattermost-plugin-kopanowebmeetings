@@ -28,6 +28,8 @@ export const Actions = keyMirror({
 	KWM_UPDATE_CALLER: null,
 	KWM_REMOVE_CALLER: null,
 	KWM_REMOVE_ALL_CALLERS: null,
+
+	KWM_WEBRTC_CONFIG_UPDATED: null,
 });
 
 export const UserStatuses = {
