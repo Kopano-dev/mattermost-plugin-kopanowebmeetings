@@ -30,7 +30,7 @@ export GOPATH CGO_ENABLED
 # Build
 
 .PHONY: all
-all: fmt lint vendor | $(CMDS) webapp
+all: fmt vendor | $(CMDS) webapp
 
 $(BASE): ; $(info creating local GOPATH ...)
 	@mkdir -p $(dir $@)
@@ -64,9 +64,13 @@ go-lint: vendor | $(BASE) ; $(info running gotlint ...)	@
 		test -z "$$($(GOLINT) $$pkg | tee /dev/stderr)" || ret=1 ; \
 	done ; exit $$ret
 
-.PHONY: lint
+.PHONY: webapp-lint
 webapp-lint: ; $(info running webapp lint ...)
-	$(MAKE) -C webapp lint || true
+	$(MAKE) -C webapp lint
+
+.PHONY: webapp-lint-checkstyle
+webapp-lint-checkstyle: ; $(info running webapp lint checkstyle ...)
+	$(MAKE) -C webapp lint-checkstyle || true
 
 .PHONY: fmt
 fmt: ; $(info running gofmt ...)	@
@@ -99,10 +103,10 @@ $(TEST_XML_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_XML_TARGETS): test-xml
 
 .PHONY: test-xml
-test-xml: vendor | $(BASE) ; $(info running $(NAME:%=% )tests ...)	@
+test-xml: vendor | $(BASE) ; $(info running $(NAME:%=% )tests (XML) ...)	@
 	@mkdir -p test
 	cd $(BASE) && 2>&1 CGO_ENABLED=$(CGO_ENABLED) $(GO) test -timeout $(TIMEOUT)s $(ARGS) -v $(TESTPKGS) | tee test/tests.output
-	$(GO2XUNIT) -fail -input test/tests.output -output test/tests.xml
+	$(shell test -s test/tests.output && $(GO2XUNIT) -fail -input test/tests.output -output test/tests.xml)
 
 # Glide
 

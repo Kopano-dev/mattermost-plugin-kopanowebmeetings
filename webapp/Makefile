@@ -29,8 +29,13 @@ js-dev: vendor | $(DIST) ; $(info building and watching Webapp plugin ...)    @
 # Helpers
 
 .PHONY: lint
-lint: vendor | $(BASE) ; $(info running Webapp  eslint ...)	@
+lint: vendor | $(BASE) ; $(info running Webapp eslint ...)	@
 	$(YARN) eslint .
+
+.PHONY: lint-checkstyle
+lint-checkstyle: vendor | $(BASE) ; $(info running Webapp eslint checkstyle ...)	@
+	@mkdir -p ../test
+	$(YARN) eslint -f checkstyle -o ../test/tests.eslint.xml . || true
 
 # Yarn
 

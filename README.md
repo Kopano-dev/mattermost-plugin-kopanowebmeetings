@@ -3,6 +3,15 @@
 This plugin adds WebRTC functionality to the Mattermost WebApp with the help
 of Kopano Web Meetings.
 
+## Quick start
+
+Make sure you have Go 1.8 or later installed. This assumes your GOPATH is `~/go` and
+you have `~/go/bin` in your $PATH and you have [Glide](https://github.com/Masterminds/glide)
+installed as well.
+
+This Mattermost plugin also includes a web part which requires [Yarn](https://yarnpkg.com).
+Thus it furthermore assumed that you have `yarn` in your $PATH.
+
 ## Building from source
 
 ```
