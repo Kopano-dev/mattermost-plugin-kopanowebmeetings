@@ -15,7 +15,7 @@ export const KwmStartButton = props => {
 	const attrs = {};
 	if ( props.inCall ) {
 		attrs.disabled = 'true';
-		className += ' kwm-incall';
+		className += ' active';
 	}
 	if ( props.disabled ) {
 		attrs.disabled = 'true';

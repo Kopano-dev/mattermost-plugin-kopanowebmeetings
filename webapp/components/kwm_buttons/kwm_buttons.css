@@ -36,7 +36,7 @@ button.kwm-btn.kwm-reject i {
 
 button.kwm-btn.kwm-start-call {
 	font-size: inherit;
-	background: white;
+	background: transparent;
 	border-color: grey;
 	color: rgba(61, 60, 64, 0.12);
 	padding-top: 2px;
@@ -56,22 +56,13 @@ button.kwm-btn.kwm-start-call:hover svg {
 	top: 0;
 	left: 0;
 }
-button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall),
-button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall):hover {
+button.kwm-btn.kwm-start-call[disabled]:not(.active),
+button.kwm-btn.kwm-start-call[disabled]:not(.active):hover {
 	opacity: 0.5;
 	cursor: default;
 	border-color: rgba(61, 60, 64, 0.12);
 }
-button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall) svg,
-button.kwm-btn.kwm-start-call[disabled]:not(.kwm-incall):hover svg {
+button.kwm-btn.kwm-start-call[disabled]:not(.active) svg,
+button.kwm-btn.kwm-start-call[disabled]:not(.active):hover svg {
 	fill: rgba(61, 60, 64, 0.12);
-}
-button.kwm-btn.kwm-start-call.kwm-incall,
-button.kwm-btn.kwm-start-call.kwm-incall:hover {
-	border-color: rgb(35, 137, 215);
-	cursor: default;
-}
-button.kwm-btn.kwm-start-call.kwm-incall svg,
-button.kwm-btn.kwm-start-call.kwm-incall:hover svg {
-	fill: rgb(35, 137, 215);
 }

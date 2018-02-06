@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
+import {makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
+
 import './kwm_sidebar.css';
 
 import {closeKwmSidebar} from 'actions/kwm_actions.js';
@@ -33,8 +36,10 @@ class KwmSidebar extends React.Component {
 
 		show();
 
+		const style = getStyle(this.props.theme);
+
 		return (
-			<div className='sidebar--right webrtc' id='sidebar-webrtc'>
+			<div className='sidebar--right webrtc' id='sidebar-webrtc' style={style.sidebar}>
 				<div className='sidebar--right__bg' />
 				<div className='sidebar-right-container'>
 					<div className='sidebar--right__content'>
@@ -50,6 +55,7 @@ class KwmSidebar extends React.Component {
 	}
 }
 KwmSidebar.propTypes = {
+	theme: PropTypes.object.isRequired,
 	isOpen: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
@@ -59,9 +65,17 @@ KwmSidebar.propTypes = {
 	]),
 };
 
+const getStyle = makeStyleFromTheme( theme => ({
+	sidebar: {
+		background: theme.centerChannelBg,
+		color: theme.centerChannelColor,
+	},
+}));
+
 const mapStateToProps = state => ({
 	isOpen: state.kwmSidebar.open,
 	remoteUsers: state.remoteUsers || [],
+	theme: getTheme(state.mattermostReduxState),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
