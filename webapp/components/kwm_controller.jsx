@@ -73,7 +73,18 @@ class KwmController extends React.PureComponent {
 
 	// Event handler for the accept button of the call notification
 	async onAcceptCall(calledBy) {
-		const {kwm, getCurrentUser, addCaller, updateCaller, openKwmSidebar, destroyCall, closeCallNotification, addLocalStream, setError} = this.props;
+		const {
+			kwm,
+			getCurrentUser,
+			addCaller,
+			updateCaller,
+			startCallTimer,
+			openKwmSidebar,
+			destroyCall,
+			closeCallNotification,
+			addLocalStream,
+			setError,
+		} = this.props;
 
 		let stream;
 		try {
@@ -97,6 +108,8 @@ class KwmController extends React.PureComponent {
 
 		closeCallNotification();
 		openKwmSidebar();
+
+		startCallTimer();
 
 		addLocalStream(stream);
 		updateCaller(getCurrentUser().id, {stream});

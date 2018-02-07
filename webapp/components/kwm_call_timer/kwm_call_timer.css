@@ -1,0 +1,12 @@
+.call-timer {
+    padding-left: 15px;
+	font-weight: bold;
+	display: inline-block;
+}
+.call-timer .icon-camera-outline {
+    width: 20px;
+    height: 14px;
+    margin-right: 6px;
+    position: relative;
+    top: 2px;
+}

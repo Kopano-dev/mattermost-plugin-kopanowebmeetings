@@ -162,3 +162,21 @@ export const callers = (state = [], action) => {
 			return newState;
 	}
 };
+
+export const callStatus = (state = {started: false, startTime: 0, duration: 0}, action) => {
+	switch (action.type) {
+		case Actions.KWM_START_CALL_TIMER:
+			return {
+				...state,
+				started: true,
+				startTime: new Date().getTime(),
+			};
+		case Actions.KWM_STOP_CALL_TIMER:
+			return {
+				...state,
+				started: false,
+			};
+		default:
+			return state;
+	}
+};

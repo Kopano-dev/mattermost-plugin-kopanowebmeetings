@@ -9,7 +9,7 @@ import {KwmHangUpButton} from 'components/kwm_buttons/kwm_buttons.jsx';
 import {getDisplayName} from 'utils/utils.js';
 
 class KwmVideoList extends React.Component {
-	callersHash: ''
+	callersHash = ''
 
 	shouldComponentUpdate(nextProps) {
 		let hash = '';

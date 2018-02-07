@@ -169,6 +169,7 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 				dispatch(setError({
 					message,
 				}));
+				dispatch(stopCallTimer());
 				dispatch(removeAllCallers());
 				dispatch(stopLocalStream());
 				dispatch(closeCallNotification());
@@ -185,6 +186,7 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 
 	// Add a listener for streams
 	kwm.webrtc.onstream = event => {
+		dispatch(startCallTimer());
 		const callerId = event.record.user;
 		dispatch(updateCaller(callerId, {
 			stream: event.stream,
@@ -217,11 +219,20 @@ export const destroyCall = () => (dispatch, getState) => {
 	const {kwm} = getState().kwmState;
 	kwm.webrtc.doHangup();
 
+	dispatch(stopCallTimer());
 	dispatch(removeAllCallers());
 	dispatch(stopLocalStream());
 	dispatch(closeCallNotification());
 	dispatch(closeKwmSidebar());
 };
+
+export const startCallTimer = () => ({
+	type: Actions.KWM_START_CALL_TIMER,
+});
+
+export const stopCallTimer = () => ({
+	type: Actions.KWM_STOP_CALL_TIMER,
+});
 
 export const openKwmSidebar = () => ({
 	type: Actions.KWM_OPEN_SIDEBAR,
