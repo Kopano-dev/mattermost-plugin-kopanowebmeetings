@@ -8,7 +8,7 @@ const BannerPlugin = require('webpack').BannerPlugin;
 const DefinePlugin = require('webpack').DefinePlugin;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
-const buildVersion = process.env.BUILD_VERSION || 'v0.0.0-no-proper-build';
+const buildVersion = process.env.BUILD_VERSION || '0.0.0-no-proper-build';
 const buildDate = process.env.BUILD_DATE || new Date();
 
 module.exports = function(env) {
