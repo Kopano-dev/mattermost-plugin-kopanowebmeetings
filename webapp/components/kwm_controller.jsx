@@ -131,7 +131,8 @@ class KwmController extends React.PureComponent {
 			kwm, getCurrentUser, getUser, getProfilesInCurrentChannel, addCaller, updateCaller, addLocalStream,
 			openKwmSidebar, destroyCall, setError,
 		} = this.props;
-		const remoteUser = getProfilesInCurrentChannel()[0];
+		const profiles = getProfilesInCurrentChannel().filter(profile => profile.id !== getCurrentUser().id);
+		const remoteUser = profiles[0];
 		const remoteUserId = remoteUser.id;
 
 		let stream;
@@ -170,8 +171,9 @@ class KwmController extends React.PureComponent {
 		let title = '';
 
 		let button = '';
-		if ( getProfilesInCurrentChannel().length === 1 ) {
-			const remoteUser = getProfilesInCurrentChannel()[0];
+		const profiles = getProfilesInCurrentChannel().filter(profile => profile.id !== getCurrentUser().id);
+		if ( profiles.length === 1 ) {
+			const remoteUser = profiles[0];
 			if ( remoteUser.id !== getCurrentUser().id ) {
 				const userName = getDisplayName(remoteUser);
 				title = 'Calling ' + userName;
