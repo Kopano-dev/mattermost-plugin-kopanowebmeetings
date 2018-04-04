@@ -258,15 +258,15 @@ export const addCaller = caller => ({
 	},
 });
 
-export const updateCaller = (userId, data) => ({
+export const updateCaller = (id, data) => ({
 	type: Actions.KWM_UPDATE_CALLER,
-	userId,
+	id,
 	data,
 });
 
-export const removeCaller = userId => ({
+export const removeCaller = id => ({
 	type: Actions.KWM_REMOVE_CALLER,
-	userId,
+	id,
 });
 
 export const removeAllCallers = () => ({

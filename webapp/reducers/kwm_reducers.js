@@ -145,7 +145,7 @@ export const callers = (state = [], action) => {
 			}
 			return newState;
 		case Actions.KWM_UPDATE_CALLER: {
-			const callerIndex = newState.findIndex(caller => caller.user.id === action.userId);
+			const callerIndex = newState.findIndex(caller => caller.user.id === action.id);
 			if ( callerIndex > -1 ) {
 				newState[callerIndex] = {
 					...newState[callerIndex],
@@ -155,7 +155,7 @@ export const callers = (state = [], action) => {
 			return newState;
 		}
 		case Actions.KWM_REMOVE_CALLER:
-			return newState.filter(caller => caller.user.id !== action.userId);
+			return newState.filter(caller => caller.user.id !== action.id);
 		case Actions.KWM_REMOVE_ALL_CALLERS:
 			return [];
 		default:

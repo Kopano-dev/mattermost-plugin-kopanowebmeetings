@@ -35,6 +35,16 @@
 .kwm-call-notification .kwm-profile-image-container img {
 	height: 50px;
 }
+.kwm-call-notification .kwm-profile-image-container .k-cn-avatar {
+	height: 50px;
+	width: 50px;
+	background: #c62911;
+	color: white;
+	font-size: 25px;
+	font-weight: bold;
+	line-height: 50px;
+	border-radius: 50%;
+}
 .kwm-call-notification .kwm-call-notification-msg {
 	text-transform: uppercase;
 	margin-bottom: 18px;

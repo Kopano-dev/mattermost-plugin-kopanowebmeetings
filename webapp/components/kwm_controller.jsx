@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
+import classNames from 'classnames';
+
 import * as Selectors from 'mattermost-redux/selectors/entities/users';
 
 import * as Actions from 'actions/kwm_actions.js';
@@ -10,11 +12,11 @@ import Constants from 'utils/constants.js';
 import {getDisplayName, getDirectTeammate} from 'utils/utils.js';
 import {getUserMedia} from 'utils/user_media.js';
 
-import {KwmStartButton} from 'components/kwm_buttons/kwm_buttons.jsx';
+import {StartCallButton} from 'components/buttons';
 import KwmSidebar from 'components/kwm_sidebar/kwm_sidebar.jsx';
-import KwmCallNotification from 'components/kwm_call_notification/kwm_call_notification.jsx';
-import KwmVideoList from 'components/kwm_videolist/kwm_videolist.jsx';
-import KwmMessagebox from 'components/kwm_messagebox/kwm_messagebox.jsx';
+import CallNotification from 'reduxComponents/CallNotification.js';
+import KwmVideoList from 'reduxComponents/VideoList.js';
+import Messagebox from 'reduxComponents/Messagebox.js';
 
 class KwmController extends React.PureComponent {
 	constructor(props) {
@@ -96,8 +98,9 @@ class KwmController extends React.PureComponent {
 			return;
 		}
 
+		const currentUser = getCurrentUser();
 		addCaller({
-			user: getCurrentUser(),
+			user: currentUser,
 			initiator: false,
 		});
 		addCaller({
@@ -154,8 +157,9 @@ class KwmController extends React.PureComponent {
 			return;
 		}
 
+		const currentUser = getCurrentUser();
 		addCaller({
-			user: getCurrentUser(),
+			user: currentUser,
 			initiator: true,
 		});
 		addCaller({
@@ -186,15 +190,16 @@ class KwmController extends React.PureComponent {
 			title = 'Calling ' + userName;
 			const userStatus = getStatusForUserId(directTeammate.id);
 			button = (
-				<KwmStartButton
-					className='channel-header__icon'
-					inCall={callersCount > 1}
-					disabled={
-						connectionStatus !== Constants.KWM_CONN_STATUS_CONNECTED ||
-						!(userStatus === Constants.UserStatuses.ONLINE ||
-						userStatus === Constants.UserStatuses.AWAY)
-					}
-					onStartCall={this.onInitializeVideoCall}
+				<StartCallButton
+					className={classNames('channel-header__icon', {active: callersCount > 1})}
+					attrs={{
+						disabled:
+							callersCount > 1 ||
+							connectionStatus !== Constants.KWM_CONN_STATUS_CONNECTED ||
+							!(userStatus === Constants.UserStatuses.ONLINE ||
+							userStatus === Constants.UserStatuses.AWAY),
+					}}
+					onClick={this.onInitializeVideoCall}
 				/>
 			);
 		}
@@ -205,8 +210,8 @@ class KwmController extends React.PureComponent {
 				<KwmSidebar onClose={onClose} title={title}>
 					<KwmVideoList onHangUp={this.onHangUp} />
 				</KwmSidebar>
-				<KwmCallNotification onAccept={this.onAcceptCall} onReject={this.onRejectCall} />
-				<KwmMessagebox />
+				<CallNotification onAccept={this.onAcceptCall} onReject={this.onRejectCall} />
+				<Messagebox />
 			</div>
 		);
 	}
