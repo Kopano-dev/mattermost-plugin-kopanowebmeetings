@@ -137,7 +137,7 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 func (p *Plugin) getClientConfiguration(ctx context.Context, id string) (*ClientConfiguration, error) {
 	config := p.config()
 
-	token, err := p.getWebMeetingsToken(ctx, config, "")
+	token, err := p.getWebMeetingsToken(ctx, config, id)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,8 @@ func (p *Plugin) getClientConfiguration(ctx context.Context, id string) (*Client
 
 func (p *Plugin) getWebMeetingsToken(ctx context.Context, config *Configuration, id string) (*kwmAPIv1.AdminAuthToken, error) {
 	data := &kwmAPIv1.AdminAuthToken{
-		Type: "Token",
+		Subject: id,
+		Type:    "Token",
 	}
 	payload, _ := json.MarshalIndent(data, "", "\t")
 
