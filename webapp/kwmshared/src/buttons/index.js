@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 import './buttons.css';
-import {cameraOutlined, cameraFilled, pickupPhone, hangupPhone} from 'utils/icons.jsx';
-import createIconButton from './IconButton.jsx';
+import {cameraOutlined, cameraFilled, pickupPhone, hangupPhone} from '../icons';
+import createIconButton from './IconButton';
 
 /**
  * The button that can be used to start calls.

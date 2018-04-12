@@ -1,1 +1,0 @@
-export {default, VideoList} from './VideoList.jsx';

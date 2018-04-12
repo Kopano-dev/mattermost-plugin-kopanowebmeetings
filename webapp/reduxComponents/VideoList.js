@@ -5,7 +5,7 @@ import * as Selectors from 'mattermost-redux/selectors/entities/users';
 import {getDisplayName} from 'utils/utils.js';
 
 // Original component
-import VideoList from 'components/VideoList';
+import VideoList from 'kwmshared/components/VideoList';
 
 const mapStateToProps = state => ({
 	callers: state.callers.map(c => ({

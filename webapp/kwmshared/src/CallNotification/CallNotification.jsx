@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import './CallNotification.css';
 import ring from './sounds/ring.mp3';
 
-import {PickupCallButton, HangupCallButton} from 'components/buttons';
-import {cameraOutlined} from 'utils/icons.jsx';
+import {PickupCallButton, HangupCallButton} from '../buttons';
+import {cameraOutlined} from '../icons';
 
 /**
  * Creates an element that can be used as image.

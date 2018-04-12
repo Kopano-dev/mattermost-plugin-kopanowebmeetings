@@ -1,2 +1,5 @@
 build/*
 sounds/*
+
+# kwmShared has its own linting
+kwmShared/*

@@ -1,0 +1,22 @@
+{
+  "name": "kwmshared",
+  "version": "0.1.0",
+  "description": "Shared components for Kopano Web Meetings",
+  "main": "index.js",
+  "author": "Ronald Toussaint",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "react": "^16.3.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1"
+  },
+  "scripts": {
+    "build:copy": "babel src -d components --copy-files",
+    "build:compile": "babel components -d components",
+    "build": "\"$npm_execpath\" run build:copy && \"$npm_execpath\" run build:compile"
+  }
+}

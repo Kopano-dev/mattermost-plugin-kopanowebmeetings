@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './VideoList.css';
-import {HangupCallButton} from 'components/buttons';
+import {HangupCallButton} from '../buttons';
 
 const propTypes = {
 	onHangUp: PropTypes.func,

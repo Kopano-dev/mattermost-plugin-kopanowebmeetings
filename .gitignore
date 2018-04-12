@@ -10,6 +10,10 @@
 /webapp/build
 /webapp/node_modules
 
+# shared components
+/webapp/kwmshared/components
+/webapp/kwmshared/node_modules
+
 # misc
 .DS_Store
 .env.local

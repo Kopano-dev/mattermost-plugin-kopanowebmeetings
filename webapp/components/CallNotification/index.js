@@ -1,1 +1,0 @@
-export {default, CallNotification} from './CallNotification.jsx';
