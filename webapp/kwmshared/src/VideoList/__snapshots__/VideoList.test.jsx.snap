@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoList component snapshot tests 1`] = `
+<div
+  className="kwm-videolist"
+>
+  
+</div>
+`;
+
+exports[`VideoList component snapshot tests 2`] = `
+<div
+  className="kwm-videolist"
+>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-1"
+      muted={true}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User One
+    </div>
+  </div>
+  <div
+    className="kwm-call-buttons"
+  >
+    <button
+      className="kwm-btn kwm-icon-btn kwm-reject"
+      onClick={[Function]}
+    >
+      <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M24.35,20.89a14.53,14.53,0,0,0-4.54.72v3.06a1,1,0,0,1-.56.89,12,12,0,0,0-2.63,1.83,1,1,0,0,1-.69.28,1,1,0,0,1-.7-.29l-2.44-2.44a1,1,0,0,1,0-1.41,16.81,16.81,0,0,1,23.13,0,1,1,0,0,1,.29.7,1,1,0,0,1-.29.7l-2.45,2.45a1,1,0,0,1-1.38,0,11.22,11.22,0,0,0-2.64-1.83,1,1,0,0,1-.55-.89V21.6A14.84,14.84,0,0,0,24.35,20.89Z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`VideoList component snapshot tests 3`] = `
+<div
+  className="kwm-videolist"
+>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-1"
+      muted={true}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User One
+    </div>
+  </div>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-2"
+      muted={false}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User Two
+    </div>
+  </div>
+  <div
+    className="kwm-call-buttons"
+  >
+    <button
+      className="kwm-btn kwm-icon-btn kwm-reject"
+      onClick={[Function]}
+    >
+      <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M24.35,20.89a14.53,14.53,0,0,0-4.54.72v3.06a1,1,0,0,1-.56.89,12,12,0,0,0-2.63,1.83,1,1,0,0,1-.69.28,1,1,0,0,1-.7-.29l-2.44-2.44a1,1,0,0,1,0-1.41,16.81,16.81,0,0,1,23.13,0,1,1,0,0,1,.29.7,1,1,0,0,1-.29.7l-2.45,2.45a1,1,0,0,1-1.38,0,11.22,11.22,0,0,0-2.64-1.83,1,1,0,0,1-.55-.89V21.6A14.84,14.84,0,0,0,24.35,20.89Z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`VideoList component snapshot tests 4`] = `
+<div
+  className="kwm-videolist"
+>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-1"
+      muted={true}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User One
+    </div>
+  </div>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-2"
+      muted={false}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User Two
+    </div>
+  </div>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-3"
+      muted={false}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User Three
+    </div>
+  </div>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-4"
+      muted={false}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User Four
+    </div>
+  </div>
+  <div
+    className="kwm-video-container"
+  >
+    <video
+      autoPlay={true}
+      className="kwm-video"
+      id="video-test-user-5"
+      muted={false}
+    />
+    <div
+      className="kwm-video-title"
+    >
+      Test User Five
+    </div>
+  </div>
+  <div
+    className="kwm-call-buttons"
+  >
+    <button
+      className="kwm-btn kwm-icon-btn kwm-reject"
+      onClick={[Function]}
+    >
+      <svg
+        viewBox="0 0 48 48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M24.35,20.89a14.53,14.53,0,0,0-4.54.72v3.06a1,1,0,0,1-.56.89,12,12,0,0,0-2.63,1.83,1,1,0,0,1-.69.28,1,1,0,0,1-.7-.29l-2.44-2.44a1,1,0,0,1,0-1.41,16.81,16.81,0,0,1,23.13,0,1,1,0,0,1,.29.7,1,1,0,0,1-.29.7l-2.45,2.45a1,1,0,0,1-1.38,0,11.22,11.22,0,0,0-2.64-1.83,1,1,0,0,1-.55-.89V21.6A14.84,14.84,0,0,0,24.35,20.89Z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;

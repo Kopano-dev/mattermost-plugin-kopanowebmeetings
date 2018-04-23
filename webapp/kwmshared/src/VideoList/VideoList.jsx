@@ -14,6 +14,9 @@ const propTypes = {
 	})),
 	currentUserId: PropTypes.string.isRequired,
 };
+const defaultProps = {
+	callers: [],
+}
 export default class VideoList extends React.Component {
 	callersHash = '';
 
@@ -76,3 +79,4 @@ export default class VideoList extends React.Component {
 	}
 }
 VideoList.propTypes = propTypes;
+VideoList.defaultProps = defaultProps;

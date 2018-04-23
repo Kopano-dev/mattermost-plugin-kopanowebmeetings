@@ -43,7 +43,10 @@ const createIconButton = (icon, classes) => {
 		);
 	}
 	Btn.propTypes = {
-		className: PropTypes.string,
+		className: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.arrayOf(PropTypes.string),
+		]),
 		attrs: PropTypes.object,
 		onClick: PropTypes.func,
 	};
