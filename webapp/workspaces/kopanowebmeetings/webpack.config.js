@@ -8,6 +8,7 @@ const BannerPlugin = require('webpack').BannerPlugin;
 const DefinePlugin = require('webpack').DefinePlugin;
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
+const VisualizerPlugin = require('webpack-visualizer-plugin');
 const buildVersion = process.env.BUILD_VERSION || '0.0.0-no-proper-build';
 const buildDate = process.env.BUILD_DATE || new Date();
 
@@ -15,8 +16,9 @@ module.exports = function(env) {
 	const isProd = Boolean(env && env.prod);
 
 	const config = {
+		mode: isProd ? 'production' : 'development',
 		context: path.resolve(__dirname),
-		entry: './index.js',
+		entry: './src/index.js',
 		output: {
 			path: path.resolve(__dirname, 'build'),
 			filename: 'kopanowebmeetings_bundle.js',
@@ -25,15 +27,17 @@ module.exports = function(env) {
 			rules: [
 				{
 					test: /\.(js|jsx)?$/,
-					exclude: /node_modules/,
+					exclude: [
+						/node_modules/,
+					],
 					use: [
 						{
 							loader: 'babel-loader',
 							options: {
 								presets: [
 									'react',
-									['es2015', {modules: false}],
-									'stage-0',
+									['env', {modules: false}],
+									['stage-0'],
 								],
 								plugins: ['transform-runtime'],
 								cacheDirectory: true,
@@ -42,7 +46,7 @@ module.exports = function(env) {
 						{
 							loader: 'eslint-loader',
 							options: {
-								configFile: isProd ? '.eslintrc.prod.json' : '.eslintrc.json',
+								configFile: isProd ? '../../.eslintrc.prod.json' : '../../.eslintrc.json',
 							},
 						},
 					],
@@ -79,11 +83,12 @@ module.exports = function(env) {
 		resolve: {
 			modules: [
 				'node_modules',
-				path.resolve(__dirname),
+				path.resolve(__dirname) + '/src',
 			],
 			extensions: ['.js', '.jsx'],
 		},
 		plugins: [
+			new VisualizerPlugin(),
 		],
 	};
 
@@ -94,7 +99,6 @@ module.exports = function(env) {
 				sourceMap: true,
 				uglifyOptions: {
 					ecma: 6,
-					warnings: true,
 				},
 			}),
 		]);
@@ -112,10 +116,9 @@ module.exports = function(env) {
 		}),
 		new DefinePlugin({
 			__VERSION__: JSON.stringify(buildVersion),
-			'process.env.NODE_ENV': isProd ? '"production"' : '"development"',
 		}),
 		new BannerPlugin(
-			fs.readFileSync(path.resolve(__dirname, '..', 'LICENSE.txt')).toString() +
+			fs.readFileSync(path.resolve(__dirname, '../../..', 'LICENSE.txt')).toString() +
 				'\n\n@version ' + buildVersion + ' (' + buildDate + ')' + (isProd ? '' : ' dev')
 		),
 	]);

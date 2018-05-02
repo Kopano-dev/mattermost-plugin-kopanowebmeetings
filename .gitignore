@@ -6,13 +6,12 @@
 /govet.txt
 /dist
 
-/webapp/.yarninstall
-/webapp/build
 /webapp/node_modules
 
-# shared components
-/webapp/kwmshared/components
-/webapp/kwmshared/node_modules
+# Workspaces
+/webapp/workspaces/*/.yarninstall
+/webapp/workspaces/*/node_modules
+/webapp/workspaces/*/build
 
 # misc
 .DS_Store

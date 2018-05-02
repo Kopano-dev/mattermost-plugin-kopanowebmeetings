@@ -47,11 +47,11 @@ $(CMDS): vendor | $(BASE) ; $(info building $@ ...) @
 
 .PHONY: webapp
 webapp:
-	$(MAKE) -C webapp js
+	$(MAKE) -C webapp/workspaces/kopanowebmeetings js
 
 .PHONY: webapp-dev
 webapp-dev:
-	$(MAKE) -C webapp js-dev
+	$(MAKE) -C webapp/workspaces/kopanowebmeetings js-dev
 
 # Helpers
 
@@ -66,11 +66,11 @@ go-lint: vendor | $(BASE) ; $(info running gotlint ...)	@
 
 .PHONY: webapp-lint
 webapp-lint: ; $(info running webapp lint ...)
-	$(MAKE) -C webapp lint
+	$(MAKE) -C webapp/workspaces/kopanowebmeetings lint
 
 .PHONY: webapp-lint-checkstyle
 webapp-lint-checkstyle: ; $(info running webapp lint checkstyle ...)
-	$(MAKE) -C webapp lint-checkstyle || true
+	$(MAKE) -C webapp/workspaces/kopanowebmeetings lint-checkstyle || true
 
 .PHONY: fmt
 fmt: ; $(info running gofmt ...)	@
@@ -122,14 +122,14 @@ vendor: glide.lock | $(BASE) ; $(info retrieving dependencies ...)
 # Dist
 
 .PHONY: dist
-dist: webapp/build/kopanowebmeetings_bundle.js plugin.json ; $(info building dist tarball ...)
+dist: webapp/workspaces/kopanowebmeetings/build/kopanowebmeetings_bundle.js plugin.json ; $(info building dist tarball ...)
 	@mkdir -p "dist/${PACKAGE_NAME}-${VERSION}"
 	@cd dist && \
 	cp -avf ../LICENSE.txt "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avf ../AGPL-3 "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avf ../README.md "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avf ../bin/* "${PACKAGE_NAME}-${VERSION}" && \
-	cp -avr ../webapp/build "${PACKAGE_NAME}-${VERSION}/webapp" && \
+	cp -avr ../webapp/workspaces/kopanowebmeetings/build "${PACKAGE_NAME}-${VERSION}/webapp" && \
 	cp -avr ../plugin.json "${PACKAGE_NAME}-${VERSION}" && \
 	sed -i s/0.0.0-no-proper-build/${VERSION}/g "${PACKAGE_NAME}-${VERSION}/plugin.json" && \
 	tar --owner=0 --group=0 -czvf ${PACKAGE_NAME}-${VERSION}.tar.gz "${PACKAGE_NAME}-${VERSION}" && \

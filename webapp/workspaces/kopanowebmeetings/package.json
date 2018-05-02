@@ -1,0 +1,40 @@
+{
+	"name": "kopanowebmeetings",
+	"version": "1.0.0",
+	"description": "Kopano WebMeetings for Mattermost",
+	"dependencies": {
+		"@kopanowebmeetings/shared-components": "*",
+		"axios": "^0.17.1",
+		"classnames": "^2.2.5",
+		"key-mirror": "^1.0.1",
+		"kwmjs": "https://stash.kopano.io/scm/kwm/kwmjs.git#v0.4.1",
+		"mattermost-redux": "^1.1.0",
+		"prop-types": "^15.5.10",
+		"react": "15.6.1",
+		"react-bootstrap": "^0.31.5",
+		"react-dom": "15.6.1",
+		"react-intl": "^2.3.0",
+		"react-redux": "5.0.6"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^8.0.3",
+		"babel-loader": "^7.1.4",
+		"babel-plugin-transform-runtime": "6.23.0",
+		"babel-polyfill": "6.23.0",
+		"babel-preset-env": "^1.6.1",
+		"babel-preset-react": "6.24.1",
+		"css-loader": "^0.28.7",
+		"eslint": "^4.19.1",
+		"eslint-loader": "^2.0.0",
+		"eslint-plugin-react": "6.10.0",
+		"file-loader": "^1.1.5",
+		"image-webpack-loader": "^3.4.2",
+		"license-webpack-plugin": "^1.1.1",
+		"style-loader": "^0.19.0",
+		"uglifyjs-webpack-plugin": "^1.1.6",
+		"webpack": "^4.6.0",
+		"webpack-cli": "^2.1.2",
+		"webpack-visualizer-plugin": "^0.1.11"
+	}
+}

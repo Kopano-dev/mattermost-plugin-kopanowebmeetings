@@ -1,12 +1,12 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Enzyme, {shallow, mount} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Enzyme, {shallow} from 'enzyme';
 
 // Configure Enzym to use the react-16 adapter
+import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({adapter: new Adapter()});
 
-import createIconButton from './IconButton.jsx';
+import createIconButton from './IconButton';
 import {cameraOutlined} from '../icons';
 
 describe('IconButton component', () => {

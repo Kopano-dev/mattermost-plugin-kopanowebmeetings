@@ -1,0 +1,42 @@
+{
+	"name": "@kopanowebmeetings/shared-components",
+	"version": "0.1.0",
+	"description": "Shared components for Kopano Web Meetings",
+	"private": true,
+	"author": "Ronald Toussaint",
+	"license": "AGPL-3.0",
+	"dependencies": {
+		"react": "^16.3.1"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-jest": "^22.4.3",
+		"babel-preset-env": "^1.6.1",
+		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-react": "^6.24.1",
+		"babel-preset-stage-0": "^6.24.1",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-16": "^1.1.1",
+		"jest": "^22.4.3",
+		"react-dom": "^16.3.2",
+		"react-test-renderer": "^16.3.2",
+		"rimraf": "^2.6.2"
+	},
+	"jest": {
+		"modulePathIgnorePatterns": [
+			"<rootDir>/build/"
+		],
+		"moduleNameMapper": {
+			"\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+			"\\.css$": "<rootDir>/__mocks__/styleMock.js"
+		}
+	},
+	"scripts": {
+		"clean": "rimraf build",
+		"build:copy": "babel src -d build --copy-files --ignore __snapshots__,*.test.jsx",
+		"build:compile": "babel build -d build",
+		"build": "\"$npm_execpath\" run build:copy && \"$npm_execpath\" run build:compile",
+		"cleanbuild": "\"$npm_execpath\" run clean && \"$npm_execpath\" run build",
+		"test": "jest"
+	}
+}

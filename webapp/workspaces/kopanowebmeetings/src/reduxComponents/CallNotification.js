@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import CallNotification from 'kwmshared/components/CallNotification';
+import CallNotification from '@kopanowebmeetings/shared-components/src/CallNotification';
 import * as Utils from 'utils/utils.js';
 
 const mapStateToProps = (state, props) => {

@@ -16,9 +16,12 @@ const propTypes = {
 };
 const defaultProps = {
 	callers: [],
-}
+};
 export default class VideoList extends React.Component {
-	callersHash = '';
+	constructor(props) {
+		super(props);
+		this.callersHash = '';
+	}
 
 	shouldComponentUpdate(nextProps) {
 		let hash = '';

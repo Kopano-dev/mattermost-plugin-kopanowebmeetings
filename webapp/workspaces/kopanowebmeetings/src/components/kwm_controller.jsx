@@ -12,7 +12,7 @@ import Constants from 'utils/constants.js';
 import {getDisplayName, getDirectTeammate} from 'utils/utils.js';
 import {getUserMedia} from 'utils/user_media.js';
 
-import {StartCallButton} from 'kwmshared/components/buttons';
+import {StartCallButton} from '@kopanowebmeetings/shared-components/src/buttons';
 import KwmSidebar from 'components/kwm_sidebar/kwm_sidebar.jsx';
 import CallNotification from 'reduxComponents/CallNotification.js';
 import KwmVideoList from 'reduxComponents/VideoList.js';
