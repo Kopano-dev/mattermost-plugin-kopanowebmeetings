@@ -6,6 +6,12 @@ exports[`IconButton component snapshot tests 1`] = `
   onClick={[Function]}
 >
   <svg
+    className="icon-camera-outline"
+    style={
+      Object {
+        "fill": undefined,
+      }
+    }
     viewBox="0 0 16 12"
     xmlns="http://www.w3.org/2000/svg"
   >

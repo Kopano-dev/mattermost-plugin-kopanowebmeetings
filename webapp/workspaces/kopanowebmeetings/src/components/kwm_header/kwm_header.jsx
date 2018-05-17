@@ -4,12 +4,12 @@ import {connect} from 'react-redux';
 
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 
-import KwmCallTimer from 'components/kwm_call_timer/kwm_call_timer.jsx';
+import CallTimer from '@kopanowebmeetings/shared-components/src/CallTimer/CallTimer';
 import './kwm_header.css';
 
 const KwmHeader = props => (
 	<div className='sidebar--right__header'>
-		{props.showTimer ? <KwmCallTimer startTime={props.startTime} color={props.theme.linkColor} /> : ''}
+		{props.showTimer ? <CallTimer startTime={props.startTime} color={props.theme.linkColor} /> : ''}
 		<span className='sidebar--right__title'>{props.title}</span>
 		<div className='pull-right'>
 			<button

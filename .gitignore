@@ -6,7 +6,9 @@
 /govet.txt
 /dist
 
+/webapp/build
 /webapp/node_modules
+/webapp/.yarninstall
 
 # Workspaces
 /webapp/workspaces/*/.yarninstall

@@ -8,6 +8,12 @@ exports[`CallNotification component snapshot tests 1`] = `
     className="kwm-call-notification-header"
   >
     <svg
+      className="icon-camera-outline"
+      style={
+        Object {
+          "fill": undefined,
+        }
+      }
       viewBox="0 0 16 12"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -43,6 +49,7 @@ exports[`CallNotification component snapshot tests 1`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-pickup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -56,6 +63,7 @@ exports[`CallNotification component snapshot tests 1`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -83,6 +91,12 @@ exports[`CallNotification component snapshot tests 3`] = `
     className="kwm-call-notification-header"
   >
     <svg
+      className="icon-camera-outline"
+      style={
+        Object {
+          "fill": undefined,
+        }
+      }
       viewBox="0 0 16 12"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -118,6 +132,7 @@ exports[`CallNotification component snapshot tests 3`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-pickup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -131,6 +146,7 @@ exports[`CallNotification component snapshot tests 3`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -156,6 +172,12 @@ exports[`CallNotification component snapshot tests 4`] = `
     className="kwm-call-notification-header"
   >
     <svg
+      className="icon-camera-outline"
+      style={
+        Object {
+          "fill": undefined,
+        }
+      }
       viewBox="0 0 16 12"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -189,6 +211,7 @@ exports[`CallNotification component snapshot tests 4`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-pickup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -202,6 +225,7 @@ exports[`CallNotification component snapshot tests 4`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >

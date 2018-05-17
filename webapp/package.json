@@ -2,5 +2,11 @@
 	"workspaces": [
 		"workspaces/*"
 	],
-	"private": true
+	"private": true,
+	"devDependencies": {
+		"wsrun": "^2.2.0"
+	},
+	"scripts": {
+		"test": "yarn wsrun test  --exclude-missing"
+	}
 }

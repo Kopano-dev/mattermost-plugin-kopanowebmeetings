@@ -77,7 +77,7 @@ class KwmController extends React.PureComponent {
 	async onAcceptCall(calledBy) {
 		const {
 			kwm,
-			getCurrentUser,
+			currentUser,
 			addCaller,
 			updateCaller,
 			startCallTimer,
@@ -98,7 +98,6 @@ class KwmController extends React.PureComponent {
 			return;
 		}
 
-		const currentUser = getCurrentUser();
 		addCaller({
 			user: currentUser,
 			initiator: false,
@@ -115,7 +114,7 @@ class KwmController extends React.PureComponent {
 		startCallTimer();
 
 		addLocalStream(stream);
-		updateCaller(getCurrentUser().id, {stream});
+		updateCaller(currentUser.id, {stream});
 
 		await kwm.webrtc.doAnswer(calledBy.id);
 		kwm.webrtc.setLocalStream(stream);
@@ -144,8 +143,15 @@ class KwmController extends React.PureComponent {
 	// Event handler for when the user has clicked a button to call another user
 	async onInitializeVideoCall() {
 		const {
-			kwm, getCurrentUser, directTeammate, addCaller, updateCaller, addLocalStream,
-			openKwmSidebar, destroyCall, setError,
+			kwm,
+			currentUser,
+			directTeammate,
+			addCaller,
+			updateCaller,
+			addLocalStream,
+			openKwmSidebar,
+			destroyCall,
+			setError,
 		} = this.props;
 
 		let stream;
@@ -157,7 +163,6 @@ class KwmController extends React.PureComponent {
 			return;
 		}
 
-		const currentUser = getCurrentUser();
 		addCaller({
 			user: currentUser,
 			initiator: true,
@@ -172,7 +177,7 @@ class KwmController extends React.PureComponent {
 
 		if (stream) {
 			addLocalStream(stream);
-			updateCaller(getCurrentUser().id, {stream});
+			updateCaller(currentUser.id, {stream});
 			kwm.webrtc.setLocalStream(stream);
 		} else {
 			destroyCall();
@@ -220,7 +225,7 @@ KwmController.propTypes = {
 	kwm: PropTypes.object,
 	removeAllCallers: PropTypes.func.isRequired,
 	closeKwmSidebar: PropTypes.func.isRequired,
-	getCurrentUser: PropTypes.func.isRequired,
+	currentUser: PropTypes.object.isRequired,
 	directTeammate: PropTypes.object,
 	getStatusForUserId: PropTypes.func.isRequired,
 	callersCount: PropTypes.number.isRequired,
@@ -229,10 +234,9 @@ KwmController.propTypes = {
 
 const mapStateToProps = state => {
 	return {
-		getCurrentUser: () => Selectors.getCurrentUser(state.mattermostReduxState),
+		currentUser: Selectors.getCurrentUser(state.mattermostReduxState),
 		getStatusForUserId: id => Selectors.getStatusForUserId(state.mattermostReduxState, id),
 		directTeammate: getDirectTeammate(state.mattermostReduxState),
-
 		kwm: state.kwmState.kwm,
 		callersCount: state.callers.length,
 		sidebarOpen: state.kwmSidebar.open,

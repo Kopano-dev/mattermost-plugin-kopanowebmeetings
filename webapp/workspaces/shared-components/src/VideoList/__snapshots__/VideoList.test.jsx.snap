@@ -35,6 +35,7 @@ exports[`VideoList component snapshot tests 2`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -89,6 +90,7 @@ exports[`VideoList component snapshot tests 3`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -188,6 +190,7 @@ exports[`VideoList component snapshot tests 4`] = `
       onClick={[Function]}
     >
       <svg
+        className="icon-hangup"
         viewBox="0 0 48 48"
         xmlns="http://www.w3.org/2000/svg"
       >

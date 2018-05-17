@@ -5,9 +5,7 @@
 	"private": true,
 	"author": "Ronald Toussaint",
 	"license": "AGPL-3.0",
-	"dependencies": {
-		"react": "^16.3.1"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
 		"babel-jest": "^22.4.3",
@@ -38,5 +36,8 @@
 		"build": "\"$npm_execpath\" run build:copy && \"$npm_execpath\" run build:compile",
 		"cleanbuild": "\"$npm_execpath\" run clean && \"$npm_execpath\" run build",
 		"test": "jest"
+	},
+	"peerDependencies": {
+		"react": "^16.3.2"
 	}
 }
