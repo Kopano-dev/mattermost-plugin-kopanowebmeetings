@@ -7,7 +7,7 @@ import * as Selectors from 'mattermost-redux/selectors/entities/users';
 
 import * as Actions from 'actions/kwm_actions.js';
 import Constants from 'utils/constants.js';
-import {getDisplayName} from 'utils/utils.js';
+import {getDisplayName, getDirectTeammate} from 'utils/utils.js';
 import {getUserMedia} from 'utils/user_media.js';
 
 import {KwmStartButton} from 'components/kwm_buttons/kwm_buttons.jsx';
@@ -141,12 +141,9 @@ class KwmController extends React.PureComponent {
 	// Event handler for when the user has clicked a button to call another user
 	async onInitializeVideoCall() {
 		const {
-			kwm, getCurrentUser, getUser, getProfilesInCurrentChannel, addCaller, updateCaller, addLocalStream,
+			kwm, getCurrentUser, directTeammate, addCaller, updateCaller, addLocalStream,
 			openKwmSidebar, destroyCall, setError,
 		} = this.props;
-		const profiles = getProfilesInCurrentChannel().filter(profile => profile.id !== getCurrentUser().id);
-		const remoteUser = profiles[0];
-		const remoteUserId = remoteUser.id;
 
 		let stream;
 		try {
@@ -162,12 +159,12 @@ class KwmController extends React.PureComponent {
 			initiator: true,
 		});
 		addCaller({
-			user: getUser(remoteUserId),
+			user: directTeammate,
 			focus: true,
 		});
 		openKwmSidebar();
 
-		kwm.webrtc.doCall(remoteUserId);
+		kwm.webrtc.doCall(directTeammate.id);
 
 		if (stream) {
 			addLocalStream(stream);
@@ -179,31 +176,27 @@ class KwmController extends React.PureComponent {
 	}
 
 	render() {
-		const {getCurrentUser, getProfilesInCurrentChannel, getStatusForUserId, callersCount, connectionStatus} = this.props;
+		const {getStatusForUserId, callersCount, connectionStatus, directTeammate} = this.props;
 		const onClose = this.onHangUp;
 		let title = '';
 
 		let button = '';
-		const profiles = getProfilesInCurrentChannel().filter(profile => profile.id !== getCurrentUser().id);
-		if ( profiles.length === 1 ) {
-			const remoteUser = profiles[0];
-			if ( remoteUser.id !== getCurrentUser().id ) {
-				const userName = getDisplayName(remoteUser);
-				title = 'Calling ' + userName;
-				const userStatus = getStatusForUserId(remoteUser.id);
-				button = (
-					<KwmStartButton
-						className='channel-header__icon'
-						inCall={callersCount > 1}
-						disabled={
-							connectionStatus !== Constants.KWM_CONN_STATUS_CONNECTED ||
-							!(userStatus === Constants.UserStatuses.ONLINE ||
-							userStatus === Constants.UserStatuses.AWAY)
-						}
-						onStartCall={this.onInitializeVideoCall}
-					/>
-				);
-			}
+		if ( directTeammate ) {
+			const userName = getDisplayName(directTeammate);
+			title = 'Calling ' + userName;
+			const userStatus = getStatusForUserId(directTeammate.id);
+			button = (
+				<KwmStartButton
+					className='channel-header__icon'
+					inCall={callersCount > 1}
+					disabled={
+						connectionStatus !== Constants.KWM_CONN_STATUS_CONNECTED ||
+						!(userStatus === Constants.UserStatuses.ONLINE ||
+						userStatus === Constants.UserStatuses.AWAY)
+					}
+					onStartCall={this.onInitializeVideoCall}
+				/>
+			);
 		}
 
 		return (
@@ -223,7 +216,7 @@ KwmController.propTypes = {
 	removeAllCallers: PropTypes.func.isRequired,
 	closeKwmSidebar: PropTypes.func.isRequired,
 	getCurrentUser: PropTypes.func.isRequired,
-	getProfilesInCurrentChannel: PropTypes.func.isRequired,
+	directTeammate: PropTypes.object,
 	getStatusForUserId: PropTypes.func.isRequired,
 	callersCount: PropTypes.number.isRequired,
 	connectionStatus: PropTypes.string.isRequired,
@@ -231,10 +224,9 @@ KwmController.propTypes = {
 
 const mapStateToProps = state => {
 	return {
-		getUser: id => Selectors.getUser(state.mattermostReduxState, id),
 		getCurrentUser: () => Selectors.getCurrentUser(state.mattermostReduxState),
-		getProfilesInCurrentChannel: () => Selectors.getProfilesInCurrentChannel(state.mattermostReduxState),
 		getStatusForUserId: id => Selectors.getStatusForUserId(state.mattermostReduxState, id),
+		directTeammate: getDirectTeammate(state.mattermostReduxState),
 
 		kwm: state.kwmState.kwm,
 		callersCount: state.callers.length,

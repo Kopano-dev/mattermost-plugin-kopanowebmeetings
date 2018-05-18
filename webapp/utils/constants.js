@@ -57,6 +57,10 @@ const Constants = {
 	}),
 
 	OVERLAY_TIME_DELAY: 400,
+	DM_CHANNEL: 'D',
+	GM_CHANNEL: 'G',
+	OPEN_CHANNEL: 'O',
+	PRIVATE_CHANNEL: 'P',
 };
 /* eslint-enable no-magic-numbers */
 

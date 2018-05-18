@@ -1,4 +1,7 @@
 import {Client4} from 'mattermost-redux/client';
+import {getCurrentUser, getUser} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
+import Constants from './constants';
 
 /**
  * Returns a name based on the first_name and last_name properties of the given user.
@@ -101,3 +104,34 @@ export const addClassToElement = (elementSelector, classNames) => {
 		}
 	});
 };
+
+/**
+ * Returns the profile of the other user when the current channel is a
+ * 'direct message' channel.
+ * If the current channel is not a direct message channel, or no other
+ * user is found the return value will be null.
+ * NOTE(rtoussaint): The function name seems a bit confusing but is copied from
+ * Mattermost.
+ * @param {Object} mmState The mattermost-redux state
+ * @return {Object} the profile of the other user if the current
+ * channel is a direct channel, null otherwise.
+ */
+export function getDirectTeammate(mmState) {
+	const channel = getCurrentChannel(mmState);
+	if ( !channel || channel.type !== Constants.DM_CHANNEL ) {
+		return null;
+	}
+
+	const userIds = channel.name.split('__');
+	const curUser = getCurrentUser(mmState);
+
+	if ( userIds.length !== 2 || userIds.indexOf(curUser.id) === -1 ) {
+		return null;
+	}
+
+	if ( userIds[0] === curUser.id ) {
+		return getUser(mmState, userIds[1]);
+	}
+
+	return getUser(mmState, userIds[0]);
+}

@@ -6,7 +6,7 @@
 		"axios": "^0.17.1",
 		"key-mirror": "^1.0.1",
 		"kwmjs": "https://stash.kopano.io/scm/kwm/kwmjs.git#v0.4.1",
-		"mattermost-redux": "^1.1.0",
+		"mattermost-redux": "^1.2.0",
 		"prop-types": "^15.5.10",
 		"react": "15.6.1",
 		"react-bootstrap": "^0.31.5",
