@@ -15,6 +15,10 @@
 /webapp/workspaces/*/node_modules
 /webapp/workspaces/*/build
 
+# example
+webapp/workspaces/shared-components/example/build
+webapp/workspaces/shared-components/example/node_modules
+
 # misc
 .DS_Store
 .env.local

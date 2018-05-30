@@ -1,0 +1,23 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "An example package to test the shared components",
+  "main": "index.jsx",
+  "license": "AGPL-3.0",
+  "sideEffect": false,
+  "dependencies": {
+    "mattermost-plugin-kopanowebmeetings": "https://stash.kopano.io/scm/~rtoussaint/mattermost-plugin-kopanowebmeetings.git#KWM-59-move-reusable-components-to-a-separate-repository",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^4.10.2"
+  },
+  "scripts": {
+    "build": "NODE_ENV=production yarn webpack"
+  }
+}
