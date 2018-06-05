@@ -14,8 +14,8 @@ import {getUserMedia} from 'utils/user_media.js';
 
 import {StartCallButton} from '@kopanowebmeetings/shared-components/src/buttons';
 import KwmSidebar from 'components/kwm_sidebar/kwm_sidebar.jsx';
+import FullScreenContainer from 'reduxComponents/FullScreenContainer';
 import CallNotification from 'reduxComponents/CallNotification.js';
-import KwmVideoList from 'reduxComponents/VideoList.js';
 import Messagebox from 'reduxComponents/Messagebox.js';
 
 class KwmController extends React.PureComponent {
@@ -186,7 +186,6 @@ class KwmController extends React.PureComponent {
 
 	render() {
 		const {getStatusForUserId, callersCount, connectionStatus, directTeammate} = this.props;
-		const onClose = this.onHangUp;
 		let title = '';
 
 		let button = '';
@@ -212,9 +211,8 @@ class KwmController extends React.PureComponent {
 		return (
 			<div className='kwm-controller'>
 				{button}
-				<KwmSidebar onClose={onClose} title={title}>
-					<KwmVideoList onHangUp={this.onHangUp} />
-				</KwmSidebar>
+				<KwmSidebar title={title} onHangUp={this.onHangUp} />
+				<FullScreenContainer title={title} onHangUp={this.onHangUp} />
 				<CallNotification onAccept={this.onAcceptCall} onReject={this.onRejectCall} />
 				<Messagebox />
 			</div>
@@ -239,7 +237,6 @@ const mapStateToProps = state => {
 		directTeammate: getDirectTeammate(state.mattermostReduxState),
 		kwm: state.kwmState.kwm,
 		callersCount: state.callers.length,
-		sidebarOpen: state.kwmSidebar.open,
 		connectionStatus: state.kwmState.connected,
 	};
 };

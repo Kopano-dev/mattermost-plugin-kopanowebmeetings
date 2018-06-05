@@ -26,9 +26,29 @@ export const hangupPhone = () => (
 	</svg>
 );
 
+export const openFullScreen = () => (
+	<svg className='icon-openfullscreen' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>
+		<path d='M10.5,2H14v3.5h2V1a1,1,0,0,0-1-1H10.5Z' />
+		<path d='M2,5.49V2H5.5V0H1A1,1,0,0,0,0,1v4.5Z' />
+		<path d='M5.5,14H2v-3.5H0V15a1,1,0,0,0,1,1H5.5Z' />
+		<path d='M14,10.49V14H10.5v2H15a1,1,0,0,0,1-1v-4.5Z' />
+	</svg>
+);
+
+export const closeFullScreen = () => (
+	<svg className='icon-closefullscreen' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>
+		<path d='M16,3.51H12.42V0h-2v4.5a1,1,0,0,0,1,1H16Z' />
+		<path d='M3.42,0v3.5H0v2H4.42a1,1,0,0,0,1-1V0Z' />
+		<path d='M0,12.51H3.42V16h2v-4.5a1,1,0,0,0-1-1H0Z' />
+		<path d='M12.42,16v-3.5H16v-2H11.42a1,1,0,0,0-1,1V16Z' />
+	</svg>
+);
+
 export default {
 	cameraOutlined,
 	cameraFilled,
 	pickupPhone,
 	hangupPhone,
+	openFullScreen,
+	closeFullScreen,
 };

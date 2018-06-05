@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
 
 import './buttons.css';
-import {cameraOutlined, cameraFilled, pickupPhone, hangupPhone} from '../icons';
+import {
+	CameraOutlined,
+	CameraFilled,
+	Phone,
+	PhoneDown,
+	Maximize,
+	Minimize,
+} from '@kopanowebmeetings/icons/src';
+
 import createIconButton from './IconButton';
 
 /**
@@ -9,8 +17,8 @@ import createIconButton from './IconButton';
  */
 export const StartCallButton = createIconButton(
 	{
-		default: cameraOutlined(),
-		active: cameraFilled(),
+		default: CameraOutlined(), // eslint-disable-line new-cap
+		active: CameraFilled(), // eslint-disable-line new-cap
 	},
 	'kwm-start-call'
 );
@@ -23,7 +31,7 @@ StartCallButton.propTypes = {
 /**
  * The button used to pick up a call.
  */
-export const PickupCallButton = createIconButton(pickupPhone(), 'kwm-accept');
+export const PickupCallButton = createIconButton(Phone(), 'kwm-accept'); // eslint-disable-line new-cap
 PickupCallButton.propTypes = {
 	className: PropTypes.string,
 	onClick: PropTypes.func,
@@ -33,8 +41,28 @@ PickupCallButton.propTypes = {
 /**
  * The button used to hang up or reject a call.
  */
-export const HangupCallButton = createIconButton(hangupPhone(), 'kwm-reject');
+export const HangupCallButton = createIconButton(PhoneDown(), 'kwm-reject'); // eslint-disable-line new-cap
 HangupCallButton.propTypes = {
+	className: PropTypes.string,
+	onClick: PropTypes.func,
+	attrs: PropTypes.object,
+};
+
+/**
+ * The button to go full screen.
+ */
+export const OpenFullScreenButton = createIconButton(Maximize(), 'kwm-fullscreen kwm-header'); // eslint-disable-line new-cap
+OpenFullScreenButton.propTypes = {
+	className: PropTypes.string,
+	onClick: PropTypes.func,
+	attrs: PropTypes.object,
+};
+
+/**
+ * The button to close full screen.
+ */
+export const CloseFullScreenButton = createIconButton(Minimize(), 'kwm-closefullscreen kwm-header'); // eslint-disable-line new-cap
+CloseFullScreenButton.propTypes = {
 	className: PropTypes.string,
 	onClick: PropTypes.func,
 	attrs: PropTypes.object,
@@ -44,5 +72,7 @@ const Buttons = {
 	StartCallButton,
 	PickupCallButton,
 	HangupCallButton,
+	OpenFullScreenButton,
+	CloseFullScreenButton,
 };
 export default Buttons;

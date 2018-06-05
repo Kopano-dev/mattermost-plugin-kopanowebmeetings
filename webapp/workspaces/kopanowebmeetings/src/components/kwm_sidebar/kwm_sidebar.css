@@ -1,9 +1,26 @@
-#sidebar-webrtc {
+.k-sidebar-webrtc {
 	background: white;
 	position: fixed;
 	height: 100%;
 	width: 400px;
 	top: 0;
 	right: 0;
+	border-left: 1px solid rgba(61, 60, 64, 0.2);
+}
+/* override some strange Mattermost rule */
+.channel-header .channel-header__icon+div.k-sidebar-webrtc {
 	display: block;
+}
+
+.k-sidebar-webrtc .k-buttons-activecall {
+	text-align: center;
+}
+
+.k-sidebar-webrtc .kwm-videolist .kwm-video-container[data-self=true] {
+	position: absolute;
+	width: 30%;
+	top: 18px;
+	right: 18px;
+	font-size: 0.8em;
+	z-index: 100;
 }

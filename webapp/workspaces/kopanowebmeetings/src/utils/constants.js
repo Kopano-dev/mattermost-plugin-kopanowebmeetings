@@ -33,7 +33,15 @@ export const Actions = keyMirror({
 
 	KWM_START_CALL_TIMER: null,
 	KWM_STOP_CALL_TIMER: null,
+
+	KWM_OPEN_FULLSCREEN: null,
 });
+
+export const Views = {
+	NONE: 'none',
+	SIDEBAR: 'sidebar',
+	FULLSCREEN: 'fullscreen',
+};
 
 export const UserStatuses = {
 	OFFLINE: 'offline',
@@ -44,6 +52,7 @@ export const UserStatuses = {
 
 const Constants = {
 	Actions,
+	Views,
 	UserStatuses,
 	...keyMirror({
 		KWM_SIDEBAR_SIZE_NONE: null,

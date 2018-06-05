@@ -1,37 +1,58 @@
 button.kwm-btn {
 	background: grey;
-/*	border: 3px solid rgba(255,255,255,0.4); */
 	border: none;
 	border-radius: 50%;
-	font-size: 30px;
+	font-size: 0px;
+	line-height: 0;
 	height: 44px;
 	width: 44px;
 	margin: 0 8px 8px 0;
 	color: white;
 	padding: 0;
 	outline: none;
-	position: relative;
-	top: 0px;
 	overflow: hidden;
+	vertical-align: middle;
 }
 button.kwm-btn svg {
-	width: 44px;
+	width: 20px;
 	fill: white;
 }
 button.kwm-btn:hover svg {
-	width: 50px;
-	position: relative;
-	left: -3px;
-	top: -3px;
+	width: 25px;
 }
+button.kwm-btn.kwm-header {
+	border-radius: 0;
+	font-size: 0;
+	line-height: 0;
+	width: auto;
+	height: auto;
+	padding: 5px;
+	margin: 0;
+	background: none;
+	color: inherit;
+	opacity: .5;
+	transition: all .2s ease-in;
+}
+button.kwm-btn.kwm-header:hover {
+	opacity: .8;
+}
+button.kwm-btn.kwm-header svg {
+	width: 15px;
+	fill: currentColor;
+	stroke: currentColor;
+}
+
 button.kwm-btn.kwm-accept {
 	background: #75b200;
 }
 button.kwm-btn.kwm-reject {
 	background: #e31611;
 }
-button.kwm-btn.kwm-reject i {
-	transform: rotate(135deg);
+button.kwm-btn.kwm-reject svg {
+	width: 30px;
+}
+button.kwm-btn.kwm-reject:hover svg {
+	width: 37.5px;
 }
 
 button.kwm-btn.kwm-start-call {
@@ -43,7 +64,7 @@ button.kwm-btn.kwm-start-call {
 
 	/* ugly, but for some reason the 'channelHeaderDropdownButton' is otherwise covering our button */
 	position: relative;
-	z-index: 1000;
+	z-index: 50;
 }
 button.kwm-btn.kwm-start-call:hover {
 	color: rgb(35, 137, 215);

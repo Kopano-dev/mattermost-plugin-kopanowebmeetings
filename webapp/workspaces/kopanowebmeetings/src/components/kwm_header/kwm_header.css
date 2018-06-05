@@ -1,8 +1,19 @@
 @media screen and (min-width: 768px) {
-	.sidebar--right .call-timer {
-		float: left;
+	.k-header {
+		padding: 0 15px;
+		height: 44px;
+		line-height: 44px;
+		font-size: 17px;
+		border-bottom: 1px solid rgba(61, 60, 64, 0.2);
 	}
-	.sidebar--right .sidebar--right__title {
+	.k-header .call-timer {
+		float: left;
+		margin-right: 5px;
+	}
+	.k-header .k-header-title {
 		max-width: 250px;
+	}
+	.k-header .k-header-buttons {
+		margin-right: -5px;
 	}
 }

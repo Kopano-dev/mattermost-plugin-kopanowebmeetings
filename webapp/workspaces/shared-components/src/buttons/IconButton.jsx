@@ -36,13 +36,19 @@ const createIconButton = (icon, classes) => {
 			}
 		}
 
+		const ariaAttrs = {};
+		if ( props.displayName ) {
+			ariaAttrs['aria-label'] = props.displayName;
+		}
+
 		return (
-			<button className={className} {...props.attrs} onClick={props.onClick}>
+			<button className={className} {...props.attrs} {...ariaAttrs.attrs} onClick={props.onClick}>
 				{iconString}
 			</button>
 		);
 	}
 	Btn.propTypes = {
+		displayName: PropTypes.String,
 		className: PropTypes.oneOfType([
 			PropTypes.string,
 			PropTypes.arrayOf(PropTypes.string),

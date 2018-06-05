@@ -1,11 +1,11 @@
-import Constants from 'utils/constants.js';
+import Constants, {Views} from 'utils/constants.js';
 const {Actions} = Constants;
 
 /**
  * The reducer for the state of the plugin errors
- * @param  {Object} [state={open: false}]   The previous state of the errors
- * @param  {Object} action				  The dispatched action
- * @return {Object}						 The new state of the errors
+ * @param  {Object} [state={open: false}] The previous state of the errors
+ * @param  {Object} action The dispatched action
+ * @return {Object} The new state of the errors
  */
 export const error = (state = null, action) => {
 	switch (action.type) {
@@ -20,9 +20,9 @@ export const error = (state = null, action) => {
 
 /**
  * The reducer for the state of the connection with the KWM server
- * @param  {Object} [state={open: false}]   The previous state of the connection
- * @param  {Object} action				  The dispatched action
- * @return {Object}						 The new state of the connection
+ * @param  {Object} [state={open: false}] The previous state of the connection
+ * @param  {Object} action The dispatched action
+ * @return {Object} The new state of the connection
  */
 export const kwmState = (
 	state = {
@@ -66,6 +66,12 @@ export const kwmState = (
 	}
 };
 
+/**
+ * The reducer for the stream of the local user.
+ * @param  {Object} [stream=null] The previous state of the local stream
+ * @param  {Object} action The dispatched action
+ * @return {Object} The new state of the local stream
+ */
 export const localStream = (stream = null, action) => {
 	switch (action.type) {
 		case Actions.KWM_ADD_LOCAL_STREAM:
@@ -78,23 +84,19 @@ export const localStream = (stream = null, action) => {
 };
 
 /**
- * The reducer for the state of the KWM sidebar
- * @param  {Object} [state={open: false}]   The previous state of the sidebar
- * @param  {Object} action				  The dispatched action
- * @return {Object}						 The new state of the sidebar
+ * The reducer for the view state of the application.
+ * @param  {Object} [state=Views.NONE] The previous state of the view
+ * @param  {Object} action The dispatched action
+ * @return {Object} The new state of the view
  */
-export const kwmSidebar = (state = {open: false}, action) => {
+export const view = (state = Views.NONE, action) => {
 	switch (action.type) {
 		case Actions.KWM_OPEN_SIDEBAR:
-			return {
-				...state,
-				open: true,
-			};
+			return Views.SIDEBAR;
 		case Actions.KWM_CLOSE_SIDEBAR:
-			return {
-				...state,
-				open: false,
-			};
+			return Views.NONE;
+		case Actions.KWM_OPEN_FULLSCREEN:
+			return Views.FULLSCREEN;
 		default:
 			return state;
 	}
@@ -102,10 +104,10 @@ export const kwmSidebar = (state = {open: false}, action) => {
 
 /**
  * The reducer for the state of the callNotification.
- * @param  {Object} [state={open: false]	The previous state of the call notification
- * @param  {Object} calledBy				The user profile of the caller
- * @param  {Object} action					The dispatched action
- * @return {Object}							The new state of the call notification
+ * @param  {Object} [state={open: false] The previous state of the call notification
+ * @param  {Object} calledBy The user profile of the caller
+ * @param  {Object} action The dispatched action
+ * @return {Object}	The new state of the call notification
  */
 export const callNotification = (state = {open: false, calledBy: null}, action) => {
 	switch (action.type) {
@@ -127,9 +129,9 @@ export const callNotification = (state = {open: false, calledBy: null}, action) 
 /**
  * The callers reducer will add and remove every user that is in the current call
  * to the state including the current user.
- * @param  {Array}  [state=[]] 	The previous state
- * @param  {Object} action	   	The action that was dispatched to the store
- * @return {Object}			  	The new state
+ * @param  {Array}  [state=[]] The previous state
+ * @param  {Object} action The action that was dispatched to the store
+ * @return {Object}	The new state
  */
 export const callers = (state = [], action) => {
 	// immutable function
@@ -145,6 +147,10 @@ export const callers = (state = [], action) => {
 			}
 			return newState;
 		case Actions.KWM_UPDATE_CALLER: {
+			if ( action.data.focus ) {
+				// Simply remove focus from all users first
+				newState.forEach(caller => caller.focus = false); // eslint-disable-line no-return-assign
+			}
 			const callerIndex = newState.findIndex(caller => caller.user.id === action.id);
 			if ( callerIndex > -1 ) {
 				newState[callerIndex] = {
@@ -163,6 +169,12 @@ export const callers = (state = [], action) => {
 	}
 };
 
+/**
+ * The reducer for the call status state of the application.
+ * @param  {Object} [state={started: false, startTime: 0, duration: 0}] The previous state of the call status
+ * @param  {Object} action The dispatched action
+ * @return {Object} The new state of the call status
+ */
 export const callStatus = (state = {started: false, startTime: 0, duration: 0}, action) => {
 	switch (action.type) {
 		case Actions.KWM_START_CALL_TIMER:

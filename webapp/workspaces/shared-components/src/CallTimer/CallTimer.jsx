@@ -21,7 +21,7 @@ class CallTimer extends React.Component {
 		const intervalTime = 1000;
 		this.intervalId = setInterval(this.updateTime, intervalTime);
 		this.state = {
-			duration: 0,
+			duration: new Date().getTime() - this.props.startTime,
 		};
 	}
 

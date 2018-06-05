@@ -55,6 +55,8 @@
 	clear: both;
 	text-align: center;
 	padding: 18px;
+	font-size: 0;
+	line-height: 0;
 }
 .kwm-call-notification .kwm-call-buttons button {
 	margin-right: 18px;

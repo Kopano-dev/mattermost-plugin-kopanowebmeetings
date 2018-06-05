@@ -242,6 +242,10 @@ export const closeKwmSidebar = () => ({
 	type: Actions.KWM_CLOSE_SIDEBAR,
 });
 
+export const openFullScreen = () => ({
+	type: Actions.KWM_OPEN_FULLSCREEN,
+});
+
 export const openCallNotification = calledBy => ({
 	type: Actions.KWM_SHOW_CALL_NOTIFICATION,
 	calledBy,

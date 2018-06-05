@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './VideoList.css';
-import {HangupCallButton} from '../buttons';
 
 const propTypes = {
-	onHangUp: PropTypes.func,
 	callers: PropTypes.arrayOf(PropTypes.shape({
 		id: PropTypes.string.isRequired,
 		displayName: PropTypes.string.isRequired,
@@ -13,6 +11,7 @@ const propTypes = {
 		focus: PropTypes.bool,
 	})),
 	currentUserId: PropTypes.string.isRequired,
+	onVideoClick: PropTypes.func,
 };
 const defaultProps = {
 	callers: [],
@@ -23,10 +22,14 @@ export default class VideoList extends React.Component {
 		this.callersHash = '';
 	}
 
+	componentDidMount() {
+		this.addStreamsToVideoElements();
+	}
+
 	shouldComponentUpdate(nextProps) {
 		let hash = '';
-		VideoList.sortCallers(nextProps.callers).forEach(caller => { // eslint-disable-line no-nested-ternary
-			hash += '-' + caller.id + (caller.stream ? '1' : '0');
+		VideoList.sortCallers(nextProps.callers, nextProps.currentUserId).forEach(caller => {
+			hash += '-' + caller.id + ':' + (caller.stream ? '1' : '0') + ':' + (caller.focus ? '1' : '0');
 		});
 
 		const shouldUpdate = hash !== this.callersHash;
@@ -35,6 +38,10 @@ export default class VideoList extends React.Component {
 	}
 
 	componentDidUpdate() {
+		this.addStreamsToVideoElements();
+	}
+
+	addStreamsToVideoElements() {
 		this.props.callers.forEach(caller => {
 			const video = document.getElementById('video-' + caller.id);
 			video.srcObject = caller.stream;
@@ -42,41 +49,37 @@ export default class VideoList extends React.Component {
 	}
 
 	/**
-	 * Sorts the array of callers, making sure the focussed caller is listed first
+	 * Sorts the array of callers, making sure the current user is listed first
 	 * @param {Array} callers
 	 * @return {Array} Sorted array of callers
 	 */
-	static sortCallers(callers) {
-		return [...callers].sort((a, b) => (a.focus ? -1 : (b.focus ? 1 : 0))); // eslint-disable-line no-nested-ternary
+	static sortCallers(callers, currentUserId) {
+		return [...callers].sort((a, b) => (a.id === currentUserId ? -1 : (b.id === currentUserId ? 1 : 0))); // eslint-disable-line no-nested-ternary
 	}
 
 	render() {
-		let buttons = '';
-		if ( this.props.callers.length ) {
-			buttons = (
-				<div className='kwm-call-buttons'>
-					<HangupCallButton onClick={this.props.onHangUp} />
-				</div>
-			);
-		}
-
 		return (
-			<div className='kwm-videolist'>
-				{VideoList.sortCallers(this.props.callers).map(caller => {
-					const videoAttrs = {
-						id: 'video-' + caller.id,
-						autoPlay: true,
-						muted: caller.id === this.props.currentUserId,
-					};
+			<div className='k-videolist-container'>
+				<div className='kwm-videolist'>
+					{VideoList.sortCallers(this.props.callers, this.props.currentUserId).map(caller => {
+						const videoAttrs = {
+							id: 'video-' + caller.id,
+							autoPlay: true,
+							muted: caller.id === this.props.currentUserId,
+						};
+						if ( this.props.onVideoClick ) {
+							videoAttrs.onClick = e => this.props.onVideoClick(caller, e);
+						}
+						const displayName = caller.id === this.props.currentUserId ? 'You' : caller.displayName;
 
-					return (
-						<div className='kwm-video-container' key={caller.id}>
-							<video className='kwm-video' {...videoAttrs} />
-							<div className='kwm-video-title'>{caller.displayName}</div>
-						</div>
-					);
-				})}
-				{buttons}
+						return (
+							<div className='kwm-video-container' key={caller.id} data-self={caller.id === this.props.currentUserId} data-focus={caller.focus}>
+								<video className='kwm-video' {...videoAttrs} />
+								<div className='kwm-video-title'>{displayName}</div>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		);
 	}
