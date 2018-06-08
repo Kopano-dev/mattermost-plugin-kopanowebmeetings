@@ -20,12 +20,13 @@ pipeline {
 				sh 'curl -sSL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz | tar -vxz -C /usr/local/bin --strip=1'
 				sh 'go get -v github.com/golang/lint/golint'
 				sh 'go get -v github.com/tebeka/go2xunit'
+				sh 'apt-get update && apt-get install -y libpng-dev'
 			}
 		}
 		stage('Yarn') {
 			steps {
 				echo 'Installing Yarn..'
-				sh 'apt-get update && apt-get install -y apt-transport-https'
+				sh 'apt-get install -y apt-transport-https'
 				sh 'curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -'
 				sh 'echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list'
 				sh 'curl -sL https://deb.nodesource.com/setup_8.x | bash -'
