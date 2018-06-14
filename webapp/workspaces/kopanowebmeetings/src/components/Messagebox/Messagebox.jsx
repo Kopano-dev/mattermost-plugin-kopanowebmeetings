@@ -15,7 +15,7 @@ export default class Messagebox extends React.PureComponent {
 		}
 
 		return (
-			<Modal.Dialog show={this.props.show}>
+			<Modal.Dialog>
 				<Modal.Header closeButton={true} onHide={this.props.onClose}>
 					<Modal.Title>{'Kopano Web Meetings'}</Modal.Title>
 				</Modal.Header>

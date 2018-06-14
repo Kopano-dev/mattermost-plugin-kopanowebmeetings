@@ -6,11 +6,12 @@ import Constants from 'utils/constants.js';
 const {Actions} = Constants;
 import Client from 'client/client.js';
 import {stopUserMedia} from 'utils/user_media.js';
+import {getDisplayName} from 'utils/utils.js';
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
 // Thunk
-export const getConfig = () => async (dispatch, getState) => {
+export const getConfig = () => (dispatch, getState) => {
 	dispatch({type: Actions.KWM_GET_CONFIG});
 
 	return new Promise(async (resolve, reject) => {
@@ -91,7 +92,7 @@ export const updateKwmWebRTCConfig = () => async (dispatch, getState) => {
 export const createKwmObj = () => async (dispatch, getState) => {
 	const {config} = getState().kwmState;
 
-	if ( config === null || !config.kwmserver_url ) {
+	if ( config === null ) {
 		return Promise.reject(new Error('No config available to create a KWM object'));
 	}
 	if ( !config.kwmserver_url || !config.token ) {
@@ -149,14 +150,18 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 	};
 
 	// Add the listener for events triggered by the remote user
-	kwm.webrtc.onpeer = event => {
+	kwm.webrtc.onpeer = event => { //eslint-disable-line complexity
 		switch (event.event) {
 			case 'incomingcall': {
 				const calledById = event.record.user;
-				dispatch(openCallNotification(Selectors.getUser(getState().mattermostReduxState, calledById)));
+				dispatch(openCallNotificationWithTimeout(Selectors.getUser(getState().mattermostReduxState, calledById)));
 				break;
 			}
+			case 'outgoingcall':
+				// Call was accepted by peer
+				break;
 			case 'newcall':
+				// Call was accepted by local user
 				break;
 			case 'destroycall':
 				dispatch(destroyCall());
@@ -164,7 +169,7 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 			case 'abortcall': {
 				let message = 'Call aborted';
 				if ( event.details === 'reject_busy' ) {
-					message = 'The user you are calling is aleady in another call.';
+					message = 'The user you are calling is already in another call.';
 				}
 				dispatch(setError({
 					message,
@@ -175,6 +180,26 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 				dispatch(closeCallNotification());
 				dispatch(closeKwmSidebar());
 				kwm.webrtc.doHangup();
+				break;
+			}
+			case 'hangup': {
+				let message = null;
+				const user = Selectors.getUser(getState().mattermostReduxState, event.record.user);
+				if ( event.details ) {
+					switch (event.details.reason) {
+						case 'autoreject':
+							message = getDisplayName(user) + ' didn\'t pick up';
+							break;
+						case 'reject':
+							message = getDisplayName(user) + ' rejected your call';
+							break;
+					}
+				}
+				if ( message ) {
+					dispatch(setError({
+						message,
+					}));
+				}
 				break;
 			}
 			case 'pc.error':
@@ -197,7 +222,7 @@ export const addKwmListeners = () => async (dispatch, getState) => {
 };
 
 // Thunk that will connect to the KWM server.
-export const connectToKwmServer = () => async (dispatch, getState) => {
+export const connectToKwmServer = () => (dispatch, getState) => {
 	const {kwm} = getState().kwmState;
 	const userId = Selectors.getCurrentUser(getState().mattermostReduxState).id;
 
@@ -226,6 +251,29 @@ export const destroyCall = () => (dispatch, getState) => {
 	dispatch(closeKwmSidebar());
 };
 
+export const startAutoRejectTimer = caller => (dispatch, getState) => {
+	const {kwm} = getState().kwmState;
+	const timer = setTimeout(() => {
+		kwm.webrtc.doHangup(caller.id, 'autoreject');
+		cancelAutoRejectTimer(dispatch, getState);
+	}, Constants.KWM_AUTOREJECT_TIMEOUT);
+	dispatch({
+		type: Actions.KWM_SET_AUTOREJECT_TIMER,
+		timer,
+	});
+};
+
+export const cancelAutoRejectTimer = () => (dispatch, getState) => {
+	const {autoRejectTimer} = getState();
+	if ( autoRejectTimer ) {
+		clearTimeout(autoRejectTimer);
+	}
+
+	dispatch({
+		type: Actions.KWM_CANCEL_AUTOREJECT_TIMER,
+	});
+};
+
 export const startCallTimer = () => ({
 	type: Actions.KWM_START_CALL_TIMER,
 });
@@ -246,14 +294,27 @@ export const openFullScreen = () => ({
 	type: Actions.KWM_OPEN_FULLSCREEN,
 });
 
+export const openCallNotificationWithTimeout = (caller, time) => (dispatch, getState) => {
+	dispatch(openCallNotification(caller));
+	dispatch(startAutoRejectTimer(caller));
+};
+
 export const openCallNotification = calledBy => ({
 	type: Actions.KWM_SHOW_CALL_NOTIFICATION,
 	calledBy,
 });
 
-export const closeCallNotification = () => ({
-	type: Actions.KWM_HIDE_CALL_NOTIFICATION,
-});
+export const closeCallNotification = () => (dispatch, getState) => {
+	const {callNotification} = getState();
+	if ( !callNotification.open ) {
+		return;
+	}
+	dispatch(cancelAutoRejectTimer());
+
+	dispatch({
+		type: Actions.KWM_HIDE_CALL_NOTIFICATION,
+	});
+};
 
 export const addCaller = caller => ({
 	type: Actions.KWM_ADD_CALLER,

@@ -127,6 +127,24 @@ export const callNotification = (state = {open: false, calledBy: null}, action) 
 };
 
 /**
+ * The callTimeout reducer will add and remove the timer that is used to timeout
+ * a call when the callee doesn't pick up.
+ * @param  {Array}  [state=null] 	The previous state
+ * @param  {Object} action	   	The action that was dispatched to the store
+ * @return {Object}			  	The new state
+ */
+export const autoRejectTimer = (state = null, action) => {
+	switch (action.type) {
+		case Actions.KWM_SET_AUTOREJECT_TIMER:
+			return action.timer;
+		case Actions.KWM_CANCEL_AUTOREJECT_TIMER:
+			return null;
+		default:
+			return state;
+	}
+};
+
+/**
  * The callers reducer will add and remove every user that is in the current call
  * to the state including the current user.
  * @param  {Array}  [state=[]] The previous state

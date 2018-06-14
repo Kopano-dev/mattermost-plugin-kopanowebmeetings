@@ -5328,11 +5328,12 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-"kwmjs@https://stash.kopano.io/scm/kwm/kwmjs.git#v0.4.1":
-  version "0.4.1"
-  resolved "https://stash.kopano.io/scm/kwm/kwmjs.git#5235a35fa5b234cda3ea2e1358506c1430927b25"
+"kwmjs@https://download.kopano.io/community/kapp:/kwmjs-0.10.0.tgz":
+  version "0.8.0"
+  resolved "https://download.kopano.io/community/kapp:/kwmjs-0.10.0.tgz#46fbb21c3b4f41a543f1ec66e47974652f95687a"
   dependencies:
-    simple-peer "^8.1.1"
+    simple-peer "^9.0.0"
+    url-search-params "^0.10.0"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
@@ -7793,9 +7794,9 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-simple-peer@^8.1.1:
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/simple-peer/-/simple-peer-8.5.0.tgz#23204746ec36b689798e4fd81d70210a855ef23f"
+simple-peer@^9.0.0:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/simple-peer/-/simple-peer-9.1.2.tgz#f8afa5eb83f8a17d66e437e5ac54c1221eca4b39"
   dependencies:
     debug "^3.1.0"
     get-browser-rtc "^1.0.0"
@@ -8608,6 +8609,10 @@ url-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/url-regex/-/url-regex-3.2.0.tgz#dbad1e0c9e29e105dd0b1f09f6862f7fdb482724"
   dependencies:
     ip-regex "^1.0.1"
+
+url-search-params@^0.10.0:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/url-search-params/-/url-search-params-0.10.2.tgz#e9da69646e48c6140c6732e1f07fb669525f5a4e"
 
 url-to-options@^1.0.1:
   version "1.0.1"
