@@ -194,5 +194,5 @@ func (p *Plugin) getWebMeetingsToken(ctx context.Context, config *Configuration,
 
 func (p *Plugin) handleStatic(rw http.ResponseWriter, req *http.Request) {
 	// TODO(longsleep): Add caching headers.
-	http.StripPrefix("/static/", http.FileServer(http.Dir("./plugins/kopanowebmeetings/webapp/static"))).ServeHTTP(rw, req)
+	http.StripPrefix("/static/", http.FileServer(http.Dir("./webapp/static"))).ServeHTTP(rw, req)
 }
