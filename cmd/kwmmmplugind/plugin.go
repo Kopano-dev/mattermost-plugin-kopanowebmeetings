@@ -26,7 +26,6 @@ import (
 	"net"
 	"net/http"
 	"strings"
-	"sync/atomic"
 	"time"
 
 	"github.com/mattermost/mattermost-server/plugin"
@@ -35,10 +34,15 @@ import (
 
 // Plugin defines the Mattermost plugin interface.
 type Plugin struct {
-	api        plugin.API
+	plugin.MattermostPlugin
 	httpClient *http.Client
 
-	configuration atomic.Value
+	KWMServerURL         string
+	KWMServerInternalURL string
+	StunURI              string
+	TurnURI              string
+	TurnUsername         string
+	TurnSharedKey        string
 }
 
 // NewPlugin creates a new plugin.
@@ -69,31 +73,25 @@ func NewPlugin(httpTransport http.RoundTripper) *Plugin {
 }
 
 // OnActivate implements the Mattermost plugin interface.
-func (p *Plugin) OnActivate(api plugin.API) error {
-	p.api = api
-	if err := p.OnConfigurationChange(); err != nil {
-		return err
+func (p *Plugin) OnActivate() error {
+	fmt.Println("OnActivate kwmmmserverd")
+
+	return p.IsConfigurationValid()
+}
+
+// IsConfigurationValid returns an error when the plugin configuration is not valid.
+func (p *Plugin) IsConfigurationValid() error {
+	if p.KWMServerURL == "" {
+		return fmt.Errorf("KWMServerURL is empty")
+	} else if p.KWMServerInternalURL == "" {
+		return fmt.Errorf("KWMServerInternalURL is empty")
 	}
 
-	config := p.config()
-	return config.IsValid()
+	return nil
 }
 
-func (p *Plugin) config() *Configuration {
-	return p.configuration.Load().(*Configuration)
-}
-
-// OnConfigurationChange implements the Mattermost plugin interface.
-func (p *Plugin) OnConfigurationChange() error {
-	var configuration Configuration
-	err := p.api.LoadPluginConfiguration(&configuration)
-	p.configuration.Store(&configuration)
-	return err
-}
-
-func (p *Plugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	config := p.config()
-	if err := config.IsValid(); err != nil {
+func (p *Plugin) ServeHTTP(c *plugin.Context, rw http.ResponseWriter, req *http.Request) {
+	if err := p.IsConfigurationValid(); err != nil {
 		http.Error(rw, "This plugin is not configured.", http.StatusNotImplemented)
 		return
 	}
@@ -135,42 +133,42 @@ func (p *Plugin) handleConfig(rw http.ResponseWriter, req *http.Request) {
 }
 
 func (p *Plugin) getClientConfiguration(ctx context.Context, id string) (*ClientConfiguration, error) {
-	config := p.config()
+	//config := p.config()
 
-	token, err := p.getWebMeetingsToken(ctx, config, id)
+	token, err := p.getWebMeetingsToken(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
 	result := &ClientConfiguration{
-		KWMServerURL: config.KWMServerURL,
+		KWMServerURL: p.KWMServerURL,
 		Token:        token,
-		StunURI:      config.StunURI,
+		StunURI:      p.StunURI,
 
 		ExpiresIn: 3600, // NOTE(longsleep): Add to configuration.
 	}
 
-	if config.TurnURI != "" {
-		result.TurnURI = config.TurnURI
-		if config.TurnSharedKey != "" {
-			result.TurnUsername = generateTurnUsername(config.TurnUsername)
-			result.TurnPassword = generateTurnPassword(result.TurnUsername, config.TurnSharedKey)
+	if p.TurnURI != "" {
+		result.TurnURI = p.TurnURI
+		if p.TurnSharedKey != "" {
+			result.TurnUsername = generateTurnUsername(p.TurnUsername)
+			result.TurnPassword = generateTurnPassword(result.TurnUsername, p.TurnSharedKey)
 		}
 	}
 
 	return result, nil
 }
 
-func (p *Plugin) getWebMeetingsToken(ctx context.Context, config *Configuration, id string) (*kwmAPIv1.AdminAuthToken, error) {
+func (p *Plugin) getWebMeetingsToken(ctx context.Context, id string) (*kwmAPIv1.AdminAuthToken, error) {
 	data := &kwmAPIv1.AdminAuthToken{
 		Subject: id,
 		Type:    "Token",
 	}
 	payload, _ := json.MarshalIndent(data, "", "\t")
 
-	req, _ := http.NewRequest("POST", config.KWMServerInternalURL+"/api/v1/admin/auth/tokens", bytes.NewBuffer(payload))
+	req, _ := http.NewRequest("POST", p.KWMServerInternalURL+"/api/v1/admin/auth/tokens", bytes.NewBuffer(payload))
 	req.Header.Set("Content-Type", "application/json")
-	//req.Header.Set("Authorization", "Bearer "+config.AdminSecret)
+	//req.Header.Set("Authorization", "Bearer "+p.AdminSecret)
 
 	response, err := p.httpClient.Do(req.WithContext(ctx))
 	if err != nil {

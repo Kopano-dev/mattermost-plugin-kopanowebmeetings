@@ -7,7 +7,7 @@
     "executable": "kwmmmplugind"
   },
   "webapp": {
-    "bundle_path": "/static/kopanowebmeetings_bundle.js"
+    "bundle_path": "/webapp/kopanowebmeetings_bundle.js"
   },
   "settings_schema": {
     "settings": [

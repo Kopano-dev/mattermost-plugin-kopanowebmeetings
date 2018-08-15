@@ -1,10 +1,9 @@
 package: stash.kopano.io/km/mattermost-plugin-kopanowebmeetings
 import:
 - package: github.com/mattermost/mattermost-server
-  version: ~4.5.0
+  version: ~5.2.0-rc4
   subpackages:
   - plugin
-  - plugin/rpcplugin
 - package: stash.kopano.io/kwm/kwmserver
   version: ~0.3.3
   subpackages:

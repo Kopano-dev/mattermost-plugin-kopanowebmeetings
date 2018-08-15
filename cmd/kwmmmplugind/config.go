@@ -18,40 +18,8 @@
 package main
 
 import (
-	"fmt"
-
 	kwmAPIv1 "stash.kopano.io/kwm/kwmserver/signaling/api-v1"
 )
-
-// A Configuration holds the configuration data.
-type Configuration struct {
-	KWMServerURL         string
-	KWMServerInternalURL string
-	StunURI              string
-	TurnURI              string
-	TurnUsername         string
-	TurnSharedKey        string
-}
-
-// IsValid returns an error when the accociated configuration is not valid.
-func (c *Configuration) IsValid() error {
-	var err error
-
-	for {
-		if c.KWMServerURL == "" {
-			err = fmt.Errorf("KWMServerURL is empty")
-			break
-		}
-		if c.KWMServerInternalURL == "" {
-			err = fmt.Errorf("KWMServerInternalURL is empty")
-			break
-		}
-
-		break
-	}
-
-	return err
-}
 
 // ClientConfiguration is the struct to hold client configuration data.
 type ClientConfiguration struct {
