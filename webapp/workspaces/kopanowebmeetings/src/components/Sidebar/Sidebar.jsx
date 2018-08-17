@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+//import {bindActionCreators} from 'redux';
+//import {connect} from 'react-redux';
 import rgba from 'rgba-convert';
 
-import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
+//import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 import {makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
 
-import './kwm_sidebar.css';
+import './sidebar.css';
 
-import {Views} from 'utils/constants';
-import {closeKwmSidebar} from 'actions/kwm_actions.js';
-import KwmHeader from 'components/kwm_header/kwm_header.jsx';
+import Header from 'redux/containers/Header';
 import ActiveCallButtons from 'components/ActiveCallButtons';
-import KwmVideoList from 'reduxComponents/VideoList.js';
+import VideoList from 'redux/containers/VideoList';
 import {removeClassFromElement, addClassToElement} from 'utils/utils.js';
 
 const propTypes = {
@@ -23,7 +21,16 @@ const propTypes = {
 	onHangUp: PropTypes.func.isRequired,
 };
 
-class KwmSidebar extends React.PureComponent {
+export default class KwmSidebar extends React.Component {
+	// This lifecycle method will make sure that the render method is only
+	// called when we have a new title or a if the sidebar should be opened
+	// or closed
+	shouldComponentUpdate(nextProps) {
+		return (
+			nextProps.isOpen !== this.props.isOpen ||
+			nextProps.title !== this.props.title
+		);
+	}
 	render() {
 		const {isOpen} = this.props;
 
@@ -45,8 +52,8 @@ class KwmSidebar extends React.PureComponent {
 
 		return (
 			<div className='k-sidebar-webrtc' id='k-sidebar-webrtc' style={style.sidebar}>
-				<KwmHeader title={this.props.title} />
-				<KwmVideoList />
+				<Header title={this.props.title} />
+				<VideoList />
 				<ActiveCallButtons onHangUp={this.props.onHangUp} />
 			</div>
 		);
@@ -68,14 +75,3 @@ const getStyle = makeStyleFromTheme( theme => {
 	};
 });
 
-const mapStateToProps = state => ({
-	isOpen: state.view === Views.SIDEBAR,
-	remoteUsers: state.remoteUsers || [],
-	theme: getTheme(state.mattermostReduxState),
-});
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-	closeKwmSidebar,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(KwmSidebar);

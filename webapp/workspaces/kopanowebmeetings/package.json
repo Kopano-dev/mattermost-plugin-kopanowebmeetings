@@ -4,18 +4,13 @@
 	"description": "Kopano WebMeetings for Mattermost",
 	"license": "AGPL-3.0",
 	"dependencies": {
+		"@kopanowebmeetings/icons": "*",
 		"@kopanowebmeetings/shared-components": "*",
 		"axios": "^0.17.1",
 		"classnames": "^2.2.5",
-		"key-mirror": "^1.0.1",
 		"kwmjs": "https://download.kopano.io/community/kapp:/kwmjs-0.10.0.tgz",
-		"mattermost-redux": "^1.1.0",
-		"prop-types": "^15.5.10",
-		"react": "^16.3.2",
-		"react-bootstrap": "^0.31.5",
-		"react-dom": "^16.3.2",
+		"mattermost-redux": "^5.2.0-rc5",
 		"react-intl": "^2.3.0",
-		"react-redux": "5.0.6",
 		"rgba-convert": "^0.3.0"
 	},
 	"devDependencies": {

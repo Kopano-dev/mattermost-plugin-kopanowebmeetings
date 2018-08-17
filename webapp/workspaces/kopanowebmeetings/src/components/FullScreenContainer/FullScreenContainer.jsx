@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './FullScreenContainer.css';
-import KwmHeader from 'components/kwm_header/kwm_header.jsx';
-import KwmVideoList from 'reduxComponents/VideoList.js';
+import Header from 'redux/containers/Header';
+import VideoList from 'redux/containers/VideoList';
 import ActiveCallButtons from 'components/ActiveCallButtons';
 import {getDisplayName} from 'utils/utils';
 
@@ -29,7 +29,7 @@ const defaultProps = {
 };
 class FullScreenContainer extends React.Component {
 	// This lifecycle method will make sure that the render method is only
-	// called when we have a new focussed called
+	// called when we have a new focussed caller
 	shouldComponentUpdate(nextProps) {
 		if ( nextProps.isOpen !== this.props.isOpen ) {
 			return true;
@@ -73,7 +73,7 @@ class FullScreenContainer extends React.Component {
 
 		return (
 			<div id='k-fullscreencontainer' style={this.props.styles.fullscreencontainer}>
-				<KwmHeader title={this.props.title} />
+				<Header title={this.props.title} />
 				<div className='k-fullscreencontainer-body'>
 					<div className='k-focussed-video-container'data-self={this.props.self} >
 						{this.props.focussedCaller ? <video className='k-video' id='k-focussed-video' autoPlay='true' /> : null}
@@ -81,7 +81,7 @@ class FullScreenContainer extends React.Component {
 						<ActiveCallButtons onHangUp={this.props.onHangUp} />
 					</div>
 					<div className='k-fullscreen-videolist-container'>
-						<KwmVideoList onVideoClick={this.props.onVideoClick} />
+						<VideoList onVideoClick={this.props.onVideoClick} />
 					</div>
 				</div>
 			</div>

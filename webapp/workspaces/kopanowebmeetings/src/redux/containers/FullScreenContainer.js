@@ -5,8 +5,9 @@ import {makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import FullScreenContainer from 'components/FullScreenContainer';
-import {Views} from 'utils/constants';
-import {updateCaller} from 'actions/kwm_actions';
+import {actions, selectors} from 'redux/ducks';
+const {updateCaller} = actions;
+const {getCallers, isFullScreenOpen} = selectors;
 
 const getStylesFromTheme = makeStyleFromTheme( theme => ({
 	fullscreencontainer: {
@@ -16,14 +17,15 @@ const getStylesFromTheme = makeStyleFromTheme( theme => ({
 }));
 
 const mapStateToProps = (state, ownProps) => {
-	const currentUserId = getCurrentUserId(state.mattermostReduxState);
-	const focussedCaller = state.callers.find(caller => caller.focus);
+	const currentUserId = getCurrentUserId(state);
+	const focussedCaller = getCallers(state['plugins-kopanowebmeetings']).find(caller => caller.focus);
 	const isSelf = typeof focussedCaller === 'object' && currentUserId === focussedCaller.user.id;
+	const isOpen = isFullScreenOpen(state['plugins-kopanowebmeetings']);
 
 	return {
-		isOpen: state.view === Views.FULLSCREEN,
-		theme: getTheme(state.mattermostReduxState),
-		styles: getStylesFromTheme(getTheme(state.mattermostReduxState)),
+		isOpen,
+		theme: getTheme(state),
+		styles: getStylesFromTheme(getTheme(state)),
 		focussedCaller,
 		self: isSelf,
 	};

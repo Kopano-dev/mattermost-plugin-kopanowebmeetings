@@ -23,6 +23,13 @@ module.exports = function(env) {
 			path: path.resolve(__dirname, 'build'),
 			filename: 'kopanowebmeetings_bundle.js',
 		},
+		externals: {
+			react: 'React',
+			redux: 'Redux',
+			'react-redux': 'ReactRedux',
+			'react-bootstrap': 'ReactBootstrap',
+			'prop-types': 'PropTypes',
+		},
 		module: {
 			rules: [
 				{

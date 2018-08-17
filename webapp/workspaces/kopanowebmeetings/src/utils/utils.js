@@ -1,7 +1,64 @@
 import {Client4} from 'mattermost-redux/client';
 import {getCurrentUser, getUser} from 'mattermost-redux/selectors/entities/users';
 import {getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
+
 import Constants from './constants';
+import client from 'client/client.js';
+
+export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
+
+export const getConfig = async () => {
+	let config;
+	try {
+		config = await client.fetchConfigWithRetry(true);
+	} catch (err) {
+		// Failed to get the config. Schedule a retry after 30 seconds
+		//console.log('retrying after 30 seconds');
+		//setTimeout(() => getConfig(), 30000);
+
+		return null;
+	}
+
+	console.log('config fetched', config);
+	if ( config ) {
+		// Build ICE servers from values in config.
+		const iceServers = [
+		];
+		if (config.stun_uri) {
+			iceServers.push({
+				urls: config.stun_uri.split(' '),
+			});
+		}
+		if (config.turn_uri) {
+			const s = {
+				urls: config.turn_uri.split(' '),
+			};
+			if (config.turn_username) {
+				s.username = config.turn_username;
+			}
+			if (config.turn_password) {
+				s.credential = config.turn_password;
+			}
+			iceServers.push(s);
+		}
+
+		// Update KWM WebRTC config.
+		config.iceServers = iceServers;
+
+		//console.log('dispatching config update', config);
+		//dispatch(setConfig(config));
+		//await dispatch(createKwmObj());
+		//await dispatch(connectToKwmServer());
+
+		// Schedule a refresh
+		// TODO(longsleep): Check behavior when laptop was asleep / or when clock changes.
+		//const when = 0.9 * config.expires_in * 1000; // eslint-disable-line no-magic-numbers
+		//console.log('setting refresh timeout at ', when);
+		//setTimeout(() => getConfig(), when);
+
+		return config;
+	}
+};
 
 /**
  * Returns a name based on the first_name and last_name properties of the given user.
