@@ -1,5 +1,5 @@
-build/*
-sounds/*
+**/build/*
+**/node_modules/*
+**/dist/*
+**/sounds/*
 
-# kwmShared has its own linting
-kwmShared/*

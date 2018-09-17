@@ -53,7 +53,7 @@ module.exports = function(env) {
 						{
 							loader: 'eslint-loader',
 							options: {
-								configFile: isProd ? '../../.eslintrc.prod.json' : '../../.eslintrc.json',
+								configFile: '../../.eslintrc.json',
 							},
 						},
 					],

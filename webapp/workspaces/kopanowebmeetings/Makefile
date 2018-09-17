@@ -20,7 +20,7 @@ $(DIST): ; $(info creating dist path ...) @
 js: vendor | $(DIST) ; $(info building Webapp plugin ...)    @
 	@rm -rf build
 
-	@BUILD_VERSION=$(VERSION) BUILD_DATE=$(DATE) $(YARN) webpack --env.prod --display-error-details --verbose --progress
+	@BUILD_VERSION=$(VERSION) BUILD_DATE=$(DATE) $(YARN) webpack --env.prod --display-error-details --progress
 
 .PHONY: js-dev
 js-dev: vendor | $(DIST) ; $(info building and watching Webapp plugin ...)    @
@@ -30,12 +30,12 @@ js-dev: vendor | $(DIST) ; $(info building and watching Webapp plugin ...)    @
 
 .PHONY: lint
 lint: vendor | $(BASE) ; $(info running Webapp eslint ...)	@
-	$(YARN) eslint .
+	$(YARN) eslint -c ../../.eslintrc.prod.json --ignore-path ../../.eslintignore .
 
 .PHONY: lint-checkstyle
 lint-checkstyle: vendor | $(BASE) ; $(info running Webapp eslint checkstyle ...)	@
 	@mkdir -p ../test
-	$(YARN) eslint -f checkstyle -o ../test/tests.eslint.xml . || true
+	$(YARN) eslint -c ../../.eslintrc.prod.json  --ignore-path ../../.eslintignore -f checkstyle -o ../../../test/tests.eslint.xml . || true
 
 # Yarn
 
