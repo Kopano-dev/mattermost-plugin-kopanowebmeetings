@@ -44,6 +44,7 @@ vendor: .yarninstall
 
 .yarninstall: package.json ; $(info getting depdencies with yarn ...)   @
 	@$(YARN) install --silent
+	@cd ../../node_modules/mattermost-redux; PATH=../.bin:$$PATH; $(YARN) install && $(YARN) run build
 	@touch $@
 
 .PHONY: clean
