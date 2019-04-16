@@ -126,7 +126,6 @@ dist: webapp/workspaces/kopanowebmeetings/build/kopanowebmeetings_bundle.js plug
 	@mkdir -p "dist/${PACKAGE_NAME}-${VERSION}"
 	@cd dist && \
 	cp -avf ../LICENSE.txt "${PACKAGE_NAME}-${VERSION}" && \
-	cp -avf ../AGPL-3 "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avf ../README.md "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avf ../bin/* "${PACKAGE_NAME}-${VERSION}" && \
 	cp -avr ../webapp/workspaces/kopanowebmeetings/build "${PACKAGE_NAME}-${VERSION}/webapp" && \
