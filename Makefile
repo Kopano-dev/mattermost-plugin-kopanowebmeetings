@@ -10,6 +10,8 @@ GOLINT  ?= golint
 
 GO2XUNIT ?= go2xunit
 
+CHGLOG ?= git-chglog
+
 # Cgo
 CGO_ENABLED ?= 0
 
@@ -135,6 +137,10 @@ dist: webapp/workspaces/kopanowebmeetings/build/kopanowebmeetings_bundle.js plug
 	cd ..
 
 # Rest
+
+.PHONY: changelog
+changelog: ; $(info updating changelog ...)
+	$(CHGLOG) --output CHANGELOG.md
 
 .PHONY: clean
 clean: ; $(info cleaning ...)	@
