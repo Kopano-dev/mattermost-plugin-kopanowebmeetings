@@ -65,8 +65,7 @@ pipeline {
 		always {
 			archive 'dist/*.tar.gz'
 			junit allowEmptyResults: true, testResults: 'test/*.xml'
-			warnings parserConfigurations: [[parserName: 'Go Lint', pattern: 'golint.txt'], [parserName: 'Go Vet', pattern: 'govet.txt']], unstableTotalAll: '0'
-			checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: 'test/tests.eslint.xml', thresholdLimit: 'high', unHealthy: ''
+			recordIssues qualityGates: [[threshold: 100, type: 'TOTAL', unstable: true]], tools: [goVet(pattern: 'govet.txt'), goLint(pattern: 'golint.txt'), esLint(pattern: 'test/tests.eslint.xml')]
 			cleanWs()
 		}
 	}
